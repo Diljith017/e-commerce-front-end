@@ -1,0 +1,450 @@
+<div class="cart-container">
+
+  <!-- CART HEADER -->
+  <div class="cart-header">
+    <div>
+      <h1>Shopping Cart</h1>
+      <div class="title-underline"></div>
+    </div>
+
+    @if (cartItems$ | async; as headerItems) {
+      @if (headerItems.length > 0) {
+        <button
+          class="clear-cart-button"
+          type="button"
+          (click)="openClearCartModal()">
+          Clear Cart
+        </button>
+      }
+    }
+  </div>
+
+
+  <!-- CART CONTENT -->
+  @if (cartItems$ | async; as items) {
+
+    @if (items.length === 0) {
+
+      <!-- EMPTY CART -->
+      <div class="empty-cart">
+
+        <div class="empty-cart-icon">🛒</div>
+
+        <h2>Your Cart Is Empty!</h2>
+
+        <p>
+          Looks like you haven't added anything to your cart yet.
+          Explore our supplements and find your favorites.
+        </p>
+
+        <a routerLink="/products" class="continue-button">
+          Explore Products
+        </a>
+
+      </div>
+
+    } @else {
+
+      <div class="cart-layout">
+
+        <!-- LEFT: CART ITEMS -->
+        <div class="cart-items">
+
+          @for (item of items; track item.product.id) {
+
+            <div class="cart-item">
+
+              <!-- PRODUCT IMAGE -->
+              <div class="product-image">
+                <img
+                  [src]="item.product.image"
+                  [alt]="item.product.name">
+              </div>
+
+              <!-- PRODUCT DETAILS -->
+              <div class="item-details">
+
+                <h3>{{ item.product.name }}</h3>
+
+                <p class="item-price">
+                  {{ item.product.price | currency:'INR':'symbol':'1.2-2' }}
+                </p>
+
+                <!-- QUANTITY -->
+                <div class="quantity-controls">
+
+                  <button
+                    type="button"
+                    (click)="decreaseQuantity(item.product.id)"
+                    [disabled]="item.quantity <= 1">
+                    −
+                  </button>
+
+                  <span>{{ item.quantity }}</span>
+
+                  <button
+                    type="button"
+                    (click)="increaseQuantity(item.product.id)"
+                    [disabled]="item.quantity >= 5">
+                    +
+                  </button>
+
+                </div>
+
+              </div>
+
+              <!-- ITEM ACTIONS -->
+              <div class="item-actions">
+
+                <strong class="item-total">
+                  {{
+                    item.product.price * item.quantity
+                      | currency:'INR':'symbol':'1.2-2'
+                  }}
+                </strong>
+
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="openRemoveModal(item.product.id)">
+                  REMOVE
+                </button>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- RIGHT: ORDER SUMMARY -->
+        <aside class="cart-summary">
+
+          @if (totalPrice$ | async; as subtotal) {
+
+            <h2>
+              <span>▤</span> Order Summary
+            </h2>
+
+            <div class="item-count">
+              ({{ totalItems$ | async }} Items)
+            </div>
+
+
+            <!-- ITEM TOTAL -->
+            <div class="summary-row">
+              <span>Item Total</span>
+
+              <strong>
+                {{ subtotal | currency:'INR':'symbol':'1.0-0' }}
+              </strong>
+            </div>
+
+
+            <!-- DELIVERY -->
+            <div class="summary-row">
+              <span>Delivery Fee</span>
+
+              <strong>
+                {{ deliveryFee | currency:'INR':'symbol':'1.0-0' }}
+              </strong>
+            </div>
+
+
+            <!-- NF DISCOUNT -->
+            <div class="summary-row">
+              <span>NF Discount</span>
+
+              <strong class="discount">
+                -{{ getDiscount(subtotal) | currency:'INR':'symbol':'1.0-0' }}
+              </strong>
+            </div>
+
+
+            <!-- COUPON SECTION -->
+            <div class="coupon-section">
+
+              <h3>
+                <span>🎟</span> Available Offers
+              </h3>
+
+
+              <!-- DYNAMIC AVAILABLE COUPONS -->
+              <div class="available-coupons">
+
+                @for (coupon of availableCoupons; track coupon.code) {
+
+                  <div class="coupon-card">
+
+                    <div class="coupon-info">
+
+                      <strong>{{ coupon.code }}</strong>
+
+                      <p>
+                        {{ coupon.description }}
+                      </p>
+
+                      @if (coupon.discountType === 'percentage') {
+                        <small>
+                          {{ coupon.discountValue }}% OFF
+                        </small>
+                      } @else {
+                        <small>
+                          ₹{{ coupon.discountValue }} OFF
+                        </small>
+                      }
+
+                      @if (coupon.minOrderAmount > 0) {
+                        <small>
+                          On orders above ₹{{ coupon.minOrderAmount }}
+                        </small>
+                      }
+
+                    </div>
+
+                    <button
+                      type="button"
+                      [disabled]="!!appliedCoupon"
+                      (click)="couponCode = coupon.code; applyCoupon(subtotal)">
+
+                      Apply
+
+                    </button>
+
+                  </div>
+
+                } @empty {
+
+                  <p class="no-coupons">
+                    No offers available right now.
+                  </p>
+
+                }
+
+              </div>
+
+
+              <!-- COUPON INPUT -->
+              <h3 class="coupon-label">
+                Enter Coupon Code
+              </h3>
+
+              @if (!appliedCoupon) {
+
+                <div class="coupon-input">
+
+                  <input
+                    type="text"
+                    placeholder="Enter coupon code"
+                    [(ngModel)]="couponCode"
+                    (input)="couponMessage = ''; couponError = false">
+
+                  <button
+                    type="button"
+                    (click)="applyCoupon(subtotal)">
+                    Apply
+                  </button>
+
+                </div>
+
+              } @else {
+
+                <div class="applied-coupon">
+
+                  <span>
+                    ✓ {{ appliedCoupon }} applied
+                  </span>
+
+                  <button
+                    type="button"
+                    (click)="removeCoupon()">
+                    Remove
+                  </button>
+
+                </div>
+
+              }
+
+
+              <!-- COUPON MESSAGE -->
+              @if (couponMessage) {
+
+                <small
+                  [class.coupon-error]="couponError"
+                  [class.coupon-success]="!couponError">
+
+                  {{ couponMessage }}
+
+                </small>
+
+              }
+
+            </div>
+
+
+            <!-- COUPON DISCOUNT -->
+            @if (appliedCoupon) {
+
+              <div class="summary-row coupon-discount-row">
+
+                <span>Coupon Discount</span>
+
+                <strong class="discount">
+                  -{{ couponDiscount | currency:'INR':'symbol':'1.0-0' }}
+                </strong>
+
+              </div>
+
+            }
+
+
+            <!-- FINAL TOTAL -->
+            <div class="summary-total">
+
+              <strong>To Pay</strong>
+
+              <strong>
+                {{ calculatePayable(subtotal) | currency:'INR':'symbol':'1.0-0' }}
+              </strong>
+
+            </div>
+
+          }
+
+
+          <!-- CHECKOUT -->
+          @if (isLoggedIn$ | async) {
+
+            <button
+              type="button"
+              class="checkout-button"
+              (click)="handleCheckout()">
+
+              Proceed to Checkout
+
+            </button>
+
+          } @else {
+
+            <button
+              type="button"
+              class="checkout-button"
+              (click)="handleLogin()">
+
+              Login to Proceed
+
+            </button>
+
+          }
+
+
+          <a routerLink="/products" class="continue-link">
+            ← Continue Shopping
+          </a>
+
+        </aside>
+
+      </div>
+
+    }
+
+  }
+
+</div>
+
+
+<!-- REMOVE ITEM MODAL -->
+@if (showRemoveModal) {
+
+  <div
+    class="logout-overlay"
+    (click)="closeRemoveModal()">
+
+    <div
+      class="logout-modal"
+      (click)="$event.stopPropagation()">
+
+      <div class="logout-icon remove-icon">
+        ×
+      </div>
+
+      <h2>REMOVE ITEM?</h2>
+
+      <p>
+        Are you sure you want to remove this product
+        from your shopping cart?
+      </p>
+
+      <div class="logout-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="closeRemoveModal()">
+          CANCEL
+        </button>
+
+        <button
+          type="button"
+          class="confirm-remove-btn"
+          (click)="confirmRemove()">
+          YES, REMOVE
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+<!-- CLEAR CART MODAL -->
+@if (showClearCartModal) {
+
+  <div
+    class="logout-overlay"
+    (click)="closeClearCartModal()">
+
+    <div
+      class="logout-modal"
+      (click)="$event.stopPropagation()">
+
+      <div class="logout-icon remove-icon">
+        !
+      </div>
+
+      <h2>CLEAR YOUR CART?</h2>
+
+      <p>
+        Are you sure you want to remove all products
+        from your shopping cart?
+        This action cannot be undone.
+      </p>
+
+      <div class="logout-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="closeClearCartModal()">
+          CANCEL
+        </button>
+
+        <button
+          type="button"
+          class="confirm-remove-btn"
+          (click)="confirmClearCart()">
+          YES, CLEAR CART
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

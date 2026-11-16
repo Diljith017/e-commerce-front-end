@@ -1,0 +1,200 @@
+<div class="orders-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+
+    <div>
+      <h2>Orders Management</h2>
+      <p>Manage and track customer orders</p>
+    </div>
+
+    <div class="total-orders">
+      Total Orders: <strong>{{ orders.length }}</strong>
+    </div>
+
+  </div>
+
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="message">Loading orders...</div>
+  }
+
+  <!-- ERROR -->
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (!loading && !errorMessage) {
+
+    <!-- SEARCH AND FILTERS -->
+    <div class="filter-toolbar">
+
+      <div class="search-container">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="currentPage = 1"
+          placeholder="Search order ID, customer name or email..."
+        />
+      </div>
+
+      <div class="filter-group">
+
+        <!-- STATUS FILTER -->
+        <select
+          [(ngModel)]="statusFilter"
+          (ngModelChange)="currentPage = 1"
+        >
+          <option value="all">All Status</option>
+          <option value="Placed">Placed</option>
+          <option value="Pending">Pending</option>
+          <option value="Processing">Processing</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+
+        <!-- PAYMENT FILTER -->
+        <select
+          [(ngModel)]="paymentFilter"
+          (ngModelChange)="currentPage = 1"
+        >
+          <option value="all">All Payments</option>
+          <option value="cod">Cash on Delivery</option>
+          <option value="online">Online Payment</option>
+        </select>
+
+        <!-- DATE SORT -->
+        <select
+          [(ngModel)]="dateSort"
+          (ngModelChange)="currentPage = 1"
+        >
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+
+        <!-- CLEAR FILTERS -->
+        <button
+          class="clear-filter-btn"
+          (click)="clearFilters()"
+        >
+          Clear Filters
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- RESULT COUNT -->
+    <div class="result-count">
+      Showing <strong>{{ filteredOrders.length }}</strong>
+      of <strong>{{ orders.length }}</strong> orders
+    </div>
+
+    @if (filteredOrders.length === 0) {
+
+      <div class="message">
+        No orders match your filters.
+      </div>
+
+    } @else {
+
+      <!-- ORDERS TABLE -->
+      <div class="table-container">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Products</th>
+              <th>Total</th>
+              <th>Payment</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (order of paginatedOrders; track order.id) {
+
+              <tr>
+
+                <td>
+                  #{{ order.orderNumber || order.id }}
+                </td>
+
+                <td>
+                  <strong>{{ order.customer.fullName }}</strong>
+                  <small>{{ order.customer.email }}</small>
+                </td>
+
+                <td>
+                  {{ order.items.length }} item(s)
+                </td>
+
+                <td>
+                  ₹{{ order.total }}
+                </td>
+
+                <td>
+                  {{ order.paymentMethod }}
+                </td>
+
+                <td>
+                  {{ order.createdAt | date:'dd MMM yyyy' }}
+                </td>
+
+                <td>
+
+                  <select
+                    [value]="order.status"
+                    (change)="updateStatus(order, $any($event.target).value)"
+                    [class]="'status-select ' + order.status.toLowerCase()"
+                  >
+                    <option value="Placed">Placed</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+
+                </td>
+
+                <td>
+                  <button
+                    class="view-btn"
+                    [routerLink]="['/admin/orders', order.id]"
+                  >
+                    View Details
+                  </button>
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+        <!-- PAGINATION -->
+        <app-pagination
+          [currentPage]="currentPage"
+          [pageSize]="pageSize"
+          [totalItems]="filteredOrders.length"
+          (pageChange)="onPageChange($event)"
+          (pageSizeChange)="onPageSizeChange($event)"
+        ></app-pagination>
+
+      </div>
+
+    }
+
+  }
+
+</div>

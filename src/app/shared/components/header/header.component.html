@@ -1,0 +1,96 @@
+<header class="main-header">
+
+  <!-- Logo -->
+  <a routerLink="/" class="logo">
+    <span class="logo-icon">NF</span>
+
+    <span class="logo-text">
+      NUTRI
+      <span>FORGE</span>
+    </span>
+  </a>
+
+  <!-- Search -->
+  <form class="search-container" (ngSubmit)="onSearch()">
+
+    <input
+      type="text"
+      name="searchText"
+      placeholder="Search supplements, brands, products..."
+      aria-label="Search products"
+      [(ngModel)]="searchText"
+    />
+
+    <button type="submit">Search</button>
+
+  </form>
+
+  <!-- Header Actions -->
+  <div class="header-actions">
+
+     <!-- Wishlist -->
+<a routerLink="/wishlist" class="wishlist-link" aria-label="Wishlist">
+  <svg
+    class="wishlist-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8z"/>
+  </svg>
+
+  
+</a>
+
+    <!-- Cart -->
+    <a routerLink="/cart" class="cart-link">
+      🛒 Cart
+
+      <span class="cart-count">
+        {{ (cartCount$ | async) ?? 0 }}
+      </span>
+    </a>
+
+   
+
+    <!-- Logged-in User -->
+   @if (isAuthenticated$ | async) {
+  @if (user$ | async; as user) {
+
+    <a routerLink="/profile" class="profile-link">
+
+      <div class="header-avatar">
+
+        @if (user.profilePhoto) {
+          <img
+            [src]="user.profilePhoto"
+            alt="Profile Photo">
+        } @else {
+          {{ user.name.charAt(0).toUpperCase() }}
+        }
+
+      </div>
+
+      <div class="header-user-info">
+        <span>Hello,</span>
+        <strong>{{ user.name }}</strong>
+      </div>
+
+    </a>
+
+  }
+} @else {
+  <a routerLink="/login" class="login-btn">
+    Login / Sign Up
+  </a>
+
+
+}
+
+  </div>
+
+</header>

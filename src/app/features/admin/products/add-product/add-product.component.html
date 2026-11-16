@@ -1,0 +1,209 @@
+<div class="form-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Add Product</h2>
+      <p>Add a new supplement to your store.</p>
+    </div>
+
+    <button class="back-btn" type="button" (click)="cancel()">
+      Back to Products
+    </button>
+  </div>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-grid">
+
+      <!-- PRODUCT NAME -->
+      <div class="form-group">
+        <label>Product Name</label>
+
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Enter product name"
+          [class.invalid]="f.name.invalid && (f.name.dirty || f.name.touched)">
+
+        @if (f.name.invalid && (f.name.dirty || f.name.touched)) {
+          <small>
+            @if (f.name.errors?.['required']) {
+              Product name is required.
+            } @else if (f.name.errors?.['pattern']) {
+              Enter a valid product name.
+            }
+          </small>
+        }
+      </div>
+
+      <!-- BRAND -->
+      <div class="form-group">
+        <label>Brand</label>
+
+        <input
+          type="text"
+          formControlName="brand"
+          placeholder="Enter brand"
+          [class.invalid]="f.brand.invalid && (f.brand.dirty || f.brand.touched)">
+
+        @if (f.brand.invalid && (f.brand.dirty || f.brand.touched)) {
+          <small>
+            @if (f.brand.errors?.['required']) {
+              Brand is required.
+            } @else if (f.brand.errors?.['pattern']) {
+              Enter a valid brand name.
+            }
+          </small>
+        }
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="form-group">
+        <label>Category</label>
+
+        <input
+          type="text"
+          formControlName="category"
+          placeholder="Enter category"
+          [class.invalid]="f.category.invalid && (f.category.dirty || f.category.touched)">
+
+        @if (f.category.invalid && (f.category.dirty || f.category.touched)) {
+          <small>
+            @if (f.category.errors?.['required']) {
+              Category is required.
+            } @else if (f.category.errors?.['pattern']) {
+              Enter a valid category.
+            }
+          </small>
+        }
+      </div>
+
+      <!-- PRICE -->
+      <div class="form-group">
+        <label>Price (₹)</label>
+
+        <input
+          type="number"
+          formControlName="price"
+          [class.invalid]="f.price.invalid && (f.price.dirty || f.price.touched)">
+
+        @if (f.price.invalid && (f.price.dirty || f.price.touched)) {
+          <small>
+            @if (f.price.errors?.['required']) {
+              Price is required.
+            } @else if (f.price.errors?.['min']) {
+              Price must be greater than 0.
+            }
+          </small>
+        }
+      </div>
+
+      <!-- STOCK -->
+      <div class="form-group">
+        <label>Stock Quantity</label>
+
+        <input
+          type="number"
+          formControlName="stock"
+          [class.invalid]="f.stock.invalid && (f.stock.dirty || f.stock.touched)">
+
+        @if (f.stock.invalid && (f.stock.dirty || f.stock.touched)) {
+          <small>
+            @if (f.stock.errors?.['required']) {
+              Stock quantity is required.
+            } @else if (f.stock.errors?.['min']) {
+              Stock cannot be negative.
+            }
+          </small>
+        }
+      </div>
+
+      <!-- RATING -->
+      <div class="form-group">
+        <label>Rating (0–5)</label>
+
+        <input
+          type="number"
+          formControlName="rating"
+          min="0"
+          max="5"
+          step="0.1"
+          [class.invalid]="f.rating.invalid && (f.rating.dirty || f.rating.touched)">
+
+        @if (f.rating.invalid && (f.rating.dirty || f.rating.touched)) {
+          <small>
+            @if (f.rating.errors?.['required']) {
+              Rating is required.
+            } @else if (f.rating.errors?.['min'] || f.rating.errors?.['max']) {
+              Rating must be between 0 and 5.
+            }
+          </small>
+        }
+      </div>
+
+      <!-- IMAGE URL -->
+      <div class="form-group full-width">
+        <label>Image URL</label>
+
+        <input
+          type="text"
+          formControlName="image"
+          placeholder="Enter product image URL"
+          [class.invalid]="f.image.invalid && (f.image.dirty || f.image.touched)">
+
+        @if (f.image.invalid && (f.image.dirty || f.image.touched)) {
+          <small>
+            @if (f.image.errors?.['required']) {
+              Image URL is required.
+            } @else if (f.image.errors?.['pattern']) {
+              Enter a valid HTTP/HTTPS image URL.
+            }
+          </small>
+        }
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="form-group full-width">
+        <label>Description</label>
+
+        <textarea
+          formControlName="description"
+          rows="5"
+          placeholder="Enter product description"
+          [class.invalid]="f.description.invalid && (f.description.dirty || f.description.touched)">
+        </textarea>
+
+        @if (f.description.invalid && (f.description.dirty || f.description.touched)) {
+          <small>
+            @if (f.description.errors?.['required']) {
+              Description is required.
+            } @else if (f.description.errors?.['pattern']) {
+              Description cannot contain only spaces.
+            }
+          </small>
+        }
+      </div>
+
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <div class="form-actions">
+
+      <button type="button" class="cancel-btn" (click)="cancel()">
+        Cancel
+      </button>
+
+      <button type="submit" class="submit-btn" [disabled]="loading">
+        {{ loading ? 'Saving...' : 'Add Product' }}
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

@@ -1,0 +1,78 @@
+<div class="wishlist-page">
+
+  <div class="wishlist-header">
+    <h1>My Wishlist <span>♡</span></h1>
+    <p>Your favourite supplements, all in one place.</p>
+  </div>
+
+  @if (wishlistItems$ | async; as items) {
+
+    @if (items.length > 0) {
+
+      <div class="wishlist-grid">
+
+        @for (product of items; track product.id) {
+
+          <div class="wishlist-card">
+
+            <a [routerLink]="['/products', product.id]">
+              <img
+                [src]="product.image"
+                [alt]="product.name"
+              />
+            </a>
+
+            <div class="wishlist-info">
+
+              <p class="brand">{{ product.brand }}</p>
+
+              <h3>{{ product.name }}</h3>
+
+              <p class="price">
+                {{ product.price | currency:'INR':'symbol':'1.0-2' }}
+              </p>
+
+              <button
+                class="cart-button"
+                (click)="addProductToCart(product)"
+                [disabled]="product.stock <= 0"
+              >
+                {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+              </button>
+
+              <button
+                class="remove-button"
+                (click)="removeProduct(getProductId(product.id))"
+              >
+                Remove ♡
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    } @else {
+
+      <div class="empty-wishlist">
+
+        <div class="empty-icon">♡</div>
+
+        <h2>Your Wishlist is Empty</h2>
+
+        <p>Explore our supplements and save your favourites!</p>
+
+        <a routerLink="/products" class="shop-button">
+          Explore Products
+        </a>
+
+      </div>
+
+    }
+
+  }
+
+</div>

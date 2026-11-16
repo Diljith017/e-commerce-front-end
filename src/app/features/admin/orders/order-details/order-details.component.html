@@ -1,0 +1,173 @@
+<div class="details-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Order Details</h2>
+      <p>View complete customer order information</p>
+    </div>
+
+    <button class="back-btn" (click)="goBack()">
+      ← Back to Orders
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="message">Loading order details...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (order && !loading) {
+
+    <!-- Order Summary -->
+    <div class="details-card">
+      <div class="card-header">
+        <h3>Order #{{ order.orderNumber || order.id }}</h3>
+
+        <span [class]="'status-badge ' + order.status.toLowerCase()">
+  {{ order.status }}
+</span>
+      </div>
+
+      <div class="info-grid">
+        <div>
+          <label>Order Date</label>
+          <p>{{ order.createdAt | date:'dd MMM yyyy, hh:mm a' }}</p>
+        </div>
+
+        <div>
+          <label>Payment Method</label>
+          <p>{{ order.paymentMethod }}</p>
+        </div>
+
+        <div>
+          <label>Total Amount</label>
+          <p class="total">₹{{ order.total }}</p>
+        </div>
+      </div>
+
+      <div class="status-update">
+        <label>Update Order Status</label>
+
+        <select
+          [value]="order.status"
+          (change)="updateStatus($any($event.target).value)"
+        >
+        <option value="Placed">Placed</option>
+          <option value="Pending">Pending</option>
+          <option value="Processing">Processing</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Customer Information -->
+    <div class="details-card">
+      <h3>Customer Information</h3>
+
+      <div class="info-grid">
+        <div>
+          <label>Full Name</label>
+          <p>{{ order.customer.fullName }}</p>
+        </div>
+
+        <div>
+          <label>Email</label>
+          <p>{{ order.customer.email }}</p>
+        </div>
+
+        <div>
+          <label>Phone</label>
+          <p>{{ order.customer.phone }}</p>
+        </div>
+
+        <div>
+          <label>City</label>
+          <p>{{ order.customer.city }}</p>
+        </div>
+
+        <div>
+          <label>State</label>
+          <p>{{ order.customer.state }}</p>
+        </div>
+
+        <div>
+          <label>Pincode</label>
+          <p>{{ order.customer.pincode }}</p>
+        </div>
+
+        <div class="full-width">
+          <label>Address</label>
+          <p>{{ order.customer.address }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purchased Products -->
+    <div class="details-card">
+      <h3>Purchased Products</h3>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (item of order.items; track $index) {
+              <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.product.price }}</td>
+                <td>₹{{ item.product.price * item.quantity }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grand-total">
+        Grand Total: ₹{{ order.total }}
+      </div>
+    </div>
+
+    <!-- Cancellation Information -->
+    @if (order.status === 'Cancelled') {
+      <div class="details-card">
+        <h3>Cancellation Information</h3>
+
+        <div class="info-grid">
+          <div>
+            <label>Cancellation Reason</label>
+            <p>{{ order.cancellationReason || 'Not provided' }}</p>
+          </div>
+
+          <div>
+            <label>Cancellation Date</label>
+            <p>
+              {{ order.cancelledAt
+                ? (order.cancelledAt | date:'dd MMM yyyy')
+                : 'Not available' }}
+            </p>
+          </div>
+
+          <div class="full-width">
+            <label>Customer Comment</label>
+            <p>{{ order.cancellationComment || 'No comment' }}</p>
+          </div>
+        </div>
+      </div>
+    }
+
+  }
+
+</div>

@@ -1,0 +1,66 @@
+<div class="product-card">
+
+  <!-- Product Image Section -->
+  <div class="product-image-container">
+
+    <a
+      [routerLink]="['/products', product.id]"
+      class="product-image-link"
+    >
+      <img
+        [src]="product.image"
+        [alt]="product.name"
+        class="product-image"
+      />
+    </a>
+
+    <!-- Wishlist Button -->
+    <button
+      type="button"
+      class="wishlist-button"
+      (click)="toggleWishlist()"
+      [class.active]="isInWishlist"
+      [attr.aria-label]="isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'"
+    >
+      {{ isInWishlist ? '♥' : '♡' }}
+    </button>
+
+  </div>
+
+  <!-- Product Information -->
+  <div class="product-info">
+
+    <p class="product-brand">{{ product.brand }}</p>
+
+    <h3>{{ product.name }}</h3>
+
+    <p class="product-rating">
+      ⭐ {{ product.rating }} / 5
+    </p>
+
+    <p class="product-price">
+      {{ product.price | currency:'INR':'symbol':'1.0-2' }}
+    </p>
+
+    <!-- Cart Button -->
+    <button
+      type="button"
+      class="cart-button"
+      (click)="handleCartClick()"
+    >
+      {{ isInCart ? 'Go to Cart' : 'Add to Cart' }}
+    </button>
+
+    <!-- Buy Now Button -->
+    <button
+      type="button"
+      class="buy-button"
+      (click)="buyNow()"
+      [disabled]="product.stock <= 0"
+    >
+      Buy Now
+    </button>
+
+  </div>
+
+</div>

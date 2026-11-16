@@ -1,0 +1,155 @@
+<div class="details-container">
+
+  <a routerLink="/products" class="back-link">
+    ← Back to Products
+  </a>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="message">
+    Loading product details...
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Product Details -->
+  <div *ngIf="product && !loading" class="product-details">
+<div class="product-image">
+  <img [src]="product.image" [alt]="product.name" />
+
+  <button
+    type="button"
+    class="wishlist-button"
+    [class.active]="isInWishlist"
+    (click)="toggleWishlist()"
+    [attr.aria-label]="isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'"
+  >
+    {{ isInWishlist ? '♥' : '♡' }}
+  </button>
+</div>
+
+    <div class="product-info">
+
+      <p class="brand">{{ product.brand }}</p>
+
+      <h1>{{ product.name }}</h1>
+
+      <p class="rating">
+        ⭐ {{ product.rating }} / 5
+      </p>
+
+      <p class="price">
+        {{ product.price | currency:'INR':'symbol':'1.0-2' }}
+      </p>
+
+      <p class="category">
+        Category: {{ product.category }}
+      </p>
+
+      <p class="description">
+        {{ product.description }}
+      </p>
+
+      <p
+        class="stock"
+        [class.out-of-stock]="product.stock === 0"
+      >
+        {{
+          product.stock > 0
+            ? product.stock + ' units available'
+            : 'Out of stock'
+        }}
+      </p>
+
+      <div class="product-actions">
+
+        <button
+          type="button"
+          class="cart-button"
+          (click)="handleCartClick()"
+          [disabled]="product.stock === 0 && !isInCart"
+        >
+          {{ isInCart ? 'Go to Cart' : 'Add to Cart' }}
+        </button>
+
+        <button
+          type="button"
+          class="buy-button"
+          (click)="buyNow()"
+          [disabled]="product.stock <= 0"
+        >
+          Buy Now
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Similar Products -->
+  <section
+    class="similar-products"
+    *ngIf="product && !loading && similarProducts.length > 0"
+  >
+
+    <div class="similar-heading">
+
+      <div>
+        <p class="section-label">DISCOVER MORE</p>
+        <h2>You May Also Like</h2>
+        <p class="similar-subtitle">
+          More products from {{ product.category }}
+        </p>
+      </div>
+
+    </div>
+
+    <div class="similar-grid">
+
+      <div
+        class="similar-card"
+        *ngFor="let item of similarProducts"
+        [routerLink]="['/products', item.id]"
+      >
+
+        <div class="similar-image">
+
+          <img
+            [src]="item.image"
+            [alt]="item.name"
+          />
+
+        </div>
+
+        <div class="similar-info">
+
+          <p class="similar-brand">
+            {{ item.brand }}
+          </p>
+
+          <h3>{{ item.name }}</h3>
+
+          <p class="similar-rating">
+            ⭐ {{ item.rating }} / 5
+          </p>
+
+          <p class="similar-price">
+            {{ item.price | currency:'INR':'symbol':'1.0-2' }}
+          </p>
+
+          <button type="button" class="view-product-button">
+            View Product →
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

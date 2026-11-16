@@ -1,0 +1,603 @@
+<div class="checkout-container">
+
+  @if (toastMessage) {
+  <div class="toast-message" [ngClass]="toastType">
+    <span class="toast-icon">
+      {{ toastType === 'success' ? '✓' : '!' }}
+    </span>
+
+    {{ toastMessage }}
+  </div>
+}
+  <h1>Checkout</h1>
+
+  @if (cartItems$ | async; as items) {
+    @if (items.length === 0) {
+      <div class="empty-cart">
+        <h2>Your cart is empty</h2>
+        <p>Add some supplements before checking out.</p>
+
+        <a routerLink="/products" class="button">
+          Continue Shopping
+        </a>
+      </div>
+    } @else {
+      <div class="checkout-layout">
+
+        <form
+          #checkoutForm="ngForm"
+          (ngSubmit)="placeOrder()"
+          class="checkout-form"
+          novalidate
+        >
+
+          <!-- DELIVERY ADDRESS -->
+          <section class="delivery-address-section">
+            <h2>Delivery Address</h2>
+
+            <!-- SELECTED ADDRESS -->
+            @if (addressMode === 'view') {
+              @if (addresses.length > 0) {
+                @for (address of addresses; track address.id) {
+                  @if (address.id === selectedAddressId) {
+                    <div class="saved-address-card">
+
+                      <div class="saved-address-heading">
+                        <strong>{{ address.label }}</strong>
+                        <span>Selected delivery address</span>
+                      </div>
+
+                      <p><strong>{{ address.fullName }}</strong></p>
+                      <p>{{ address.phone }} · {{ address.email }}</p>
+
+                      <p>
+                        {{ address.address }},
+                        {{ address.city }},
+                        {{ address.state }} -
+                        {{ address.pincode }}
+                      </p>
+
+                      <button
+                        type="button"
+                        class="button button-secondary"
+                        (click)="changeAddress()"
+                      >
+                        Change Address
+                      </button>
+
+                      <button
+                        type="button"
+                        class="button button-secondary"
+                        (click)="addNewAddress()"
+                      >
+                        Add New Address
+                      </button>
+
+                    </div>
+                  }
+                }
+              } @else {
+                <p>No saved delivery address. Add an address to continue.</p>
+
+                <button
+                  type="button"
+                  class="button"
+                  (click)="addNewAddress()"
+                >
+                  Add Delivery Address
+                </button>
+              }
+            }
+
+            <!-- CHOOSE SAVED ADDRESS -->
+            @if (addressMode === 'select') {
+              <div class="saved-address-list">
+
+                <h3>Choose a delivery address</h3>
+
+                @for (address of addresses; track address.id) {
+                  <label class="saved-address-card address-choice">
+
+                    <input
+                      type="radio"
+                      name="selectedAddress"
+                      [value]="address.id"
+                      [checked]="selectedAddressId === address.id"
+                      (change)="selectAddress(address)"
+                    />
+
+                    <span>
+                      <strong>
+                        {{ address.label }} — {{ address.fullName }}
+                      </strong>
+
+                      <span>{{ address.phone }}</span>
+
+                      <span>
+                        {{ address.address }},
+                        {{ address.city }},
+                        {{ address.state }} -
+                        {{ address.pincode }}
+                      </span>
+                    </span>
+
+                  </label>
+                }
+
+                <button
+                  type="button"
+                  class="button"
+                  (click)="addNewAddress()"
+                >
+                  Add New Address
+                </button>
+
+                <button
+                  type="button"
+                  class="button button-secondary"
+                  (click)="addressMode = 'view'"
+                >
+                  Back
+                </button>
+
+              </div>
+            }
+
+            <!-- ADD NEW ADDRESS -->
+            @if (addressMode === 'add') {
+              <h3>Add a New Address</h3>
+
+              <!-- ADDRESS LABEL -->
+              <label for="newAddressLabel">Address Type</label>
+
+              <select
+                id="newAddressLabel"
+                name="newAddressLabel"
+                [(ngModel)]="newAddressLabel"
+              >
+                <option value="HOME">Home</option>
+                <option value="WORK">Work</option>
+                <option value="OTHER">Other</option>
+              </select>
+
+              <!-- FULL NAME -->
+              <label for="fullName">Full Name</label>
+
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                [(ngModel)]="customer.fullName"
+                required
+                minlength="3"
+                maxlength="50"
+                pattern="(?=.*[a-zA-Z])[a-zA-Z ]+"
+                #fullName="ngModel"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                [class.invalid-input]="(fullName.dirty || fullName.touched) && fullName.invalid"
+              />
+
+              @if ((fullName.dirty || fullName.touched) && fullName.invalid) {
+                <small class="field-error">
+                  @if (fullName.errors?.['required']) {
+                    Full name is required.
+                  }
+
+                  @if (fullName.errors?.['minlength']) {
+                    Minimum 3 characters required.
+                  }
+
+                  @if (fullName.errors?.['maxlength']) {
+                    Maximum 50 characters allowed.
+                  }
+
+                  @if (fullName.errors?.['pattern']) {
+                    Only letters and spaces are allowed.
+                  }
+                </small>
+              }
+
+              <!-- EMAIL -->
+              <label for="email">Email Address</label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                [(ngModel)]="customer.email"
+                required
+                email
+                pattern="^(?!.*\.\.)[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$"  
+                #email="ngModel"
+                placeholder="Enter your email"
+                autocomplete="email"
+                [class.invalid-input]="(email.dirty || email.touched) && email.invalid"
+              />
+
+              @if ((email.dirty || email.touched) && email.invalid) {
+                <small class="field-error">
+                  @if (email.errors?.['required']) {
+                    Email is required.
+                  }
+
+                  @if (email.errors?.['email']) {
+                    Enter a valid email address.
+                  }
+
+                  @if (email.errors?.['pattern']) {
+                 Email must start with a letter.
+                  }
+                </small>
+              }
+
+              <!-- PHONE -->
+              <label for="phone">Mobile Number</label>
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                [(ngModel)]="customer.phone"
+                required
+                pattern="[6-9][0-9]{9}"
+                maxlength="10"
+                inputmode="numeric"
+                #phone="ngModel"
+                placeholder="Enter 10-digit mobile number"
+                autocomplete="tel"
+                [class.invalid-input]="(phone.dirty || phone.touched) && phone.invalid"
+              />
+
+              @if ((phone.dirty || phone.touched) && phone.invalid) {
+                <small class="field-error">
+                  @if (phone.errors?.['required']) {
+                    Mobile number is required.
+                  }
+
+                  @if (phone.errors?.['pattern']) {
+                    Enter a valid Indian mobile number.
+                  }
+                </small>
+              }
+
+              <!-- ADDRESS -->
+              <label for="address">Delivery Address</label>
+
+              <textarea
+                id="address"
+                name="address"
+                [(ngModel)]="customer.address"
+                required
+                minlength="10"
+                maxlength="200"
+                pattern=".*\S.*"
+                #address="ngModel"
+                placeholder="House number, street, locality..."
+                autocomplete="street-address"
+                [class.invalid-input]="(address.dirty || address.touched) && address.invalid"
+              ></textarea>
+
+              @if ((address.dirty || address.touched) && address.invalid) {
+                <small class="field-error">
+                  @if (address.errors?.['required']) {
+                    Address is required.
+                  }
+
+                  @if (address.errors?.['minlength']) {
+                    Please enter at least 10 characters.
+                  }
+
+                  @if (address.errors?.['maxlength']) {
+                    Maximum 200 characters allowed.
+                  }
+                </small>
+              }
+
+              <!-- CITY -->
+              <label for="city">City</label>
+
+              <input
+                id="city"
+                name="city"
+                type="text"
+                [(ngModel)]="customer.city"
+               required
+                minlength="2"
+                maxlength="50"
+                pattern="(?=.*[a-zA-Z])[a-zA-Z ]+"
+                #city="ngModel"
+                placeholder="Enter your city"
+                autocomplete="address-level2"
+                [class.invalid-input]="(city.dirty || city.touched) && city.invalid"
+              />
+
+              @if ((city.dirty || city.touched) && city.invalid) {
+                <small class="field-error">
+                  @if (city.errors?.['required']) {
+                    City is required.
+                  }
+
+                  @if (city.errors?.['minlength']) {
+                    Minimum 2 characters required.
+                  }
+
+                  @if (city.errors?.['pattern']) {
+                    Only letters and spaces are allowed.
+                  }
+
+                  @if (city.errors?.['maxlength']) {
+  Maximum 50 characters allowed.
+}
+                </small>
+              }
+
+              <!-- STATE -->
+              <label for="state">State</label>
+
+              <input
+                id="state"
+                name="state"
+                type="text"
+                [(ngModel)]="customer.state"
+               required
+                minlength="2"
+                maxlength="50"
+                pattern="(?=.*[a-zA-Z])[a-zA-Z ]+"
+                #state="ngModel"
+                placeholder="Enter your state"
+                autocomplete="address-level1"
+                [class.invalid-input]="(state.dirty || state.touched) && state.invalid"
+              />
+
+              @if ((state.dirty || state.touched) && state.invalid) {
+                <small class="field-error">
+                  @if (state.errors?.['required']) {
+                    State is required.
+                  }
+
+                  @if (state.errors?.['minlength']) {
+                    Minimum 2 characters required.
+                  }
+
+                  @if (state.errors?.['pattern']) {
+                    Only letters and spaces are allowed.
+                  }
+
+                  @if (city.errors?.['maxlength']) {
+                    Maximum 50 characters allowed.
+                    }
+                </small>
+              }
+
+              <!-- PINCODE -->
+              <label for="pincode">PIN Code</label>
+
+              <input
+                id="pincode"
+                name="pincode"
+                type="text"
+                [(ngModel)]="customer.pincode"
+                required
+                pattern="[1-9][0-9]{5}"
+                maxlength="6"
+                inputmode="numeric"
+                #pincode="ngModel"
+                placeholder="Enter 6-digit PIN code"
+                autocomplete="postal-code"
+                [class.invalid-input]="(pincode.dirty || pincode.touched) && pincode.invalid"
+              />
+
+              @if ((pincode.dirty || pincode.touched) && pincode.invalid) {
+                <small class="field-error">
+                  @if (pincode.errors?.['required']) {
+                    PIN code is required.
+                  }
+
+                  @if (pincode.errors?.['pattern']) {
+                    Enter a valid 6-digit Indian PIN code.
+                  }
+                </small>
+              }
+
+              <!-- ADDRESS ACTIONS -->
+              <div class="address-form-actions">
+
+                <button
+                  type="button"
+                  class="button"
+                  [disabled]="addressSaving"
+                  (click)="saveNewAddress()"
+                >
+                  {{ addressSaving ? 'Saving Address...' : 'Save Address' }}
+                </button>
+
+                @if (addresses.length > 0) {
+                  <button
+                    type="button"
+                    class="button button-secondary"
+                    (click)="selectAddress(addresses[0])"
+                  >
+                    Cancel
+                  </button>
+                }
+
+              </div>
+
+              @if (addressError) {
+                <p class="error-message" role="alert">
+                  {{ addressError }}
+                </p>
+              }
+
+              @if (addressSuccess) {
+                <p class="success-message" role="status">
+                  {{ addressSuccess }}
+                </p>
+              }
+            }
+
+          </section>
+
+          <!-- PAYMENT METHOD -->
+          <h2>Payment Method</h2>
+
+          <!-- CASH ON DELIVERY -->
+          <label class="payment-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="cod"
+              [(ngModel)]="paymentMethod"
+            />
+            Cash on Delivery
+          </label>
+
+          <!-- ONLINE PAYMENT -->
+          <label class="payment-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="online"
+              [(ngModel)]="paymentMethod"
+            />
+            Online Payment
+          </label>
+
+          <!-- ONLINE PAYMENT OPTIONS -->
+          @if (paymentMethod === 'online') {
+            <div class="online-payment-section">
+
+              <h3>Select Online Payment Method</h3>
+
+              <!-- UPI -->
+              <label class="online-payment-option">
+                <input
+                  type="radio"
+                  name="onlinePaymentMethod"
+                  value="upi"
+                  [(ngModel)]="onlinePaymentMethod"
+                />
+                <span>UPI</span>
+                <small>Google Pay, PhonePe, Paytm</small>
+              </label>
+
+              <!-- CARD -->
+              <label class="online-payment-option">
+                <input
+                  type="radio"
+                  name="onlinePaymentMethod"
+                  value="card"
+                  [(ngModel)]="onlinePaymentMethod"
+                />
+                <span>Credit / Debit Card</span>
+                <small>Visa, Mastercard, RuPay</small>
+              </label>
+
+              <!-- NET BANKING -->
+              <label class="online-payment-option">
+                <input
+                  type="radio"
+                  name="onlinePaymentMethod"
+                  value="netbanking"
+                  [(ngModel)]="onlinePaymentMethod"
+                />
+                <span>Net Banking</span>
+                <small>Pay using your bank account</small>
+              </label>
+
+              @if (onlinePaymentMethod === 'upi') {
+                <div class="payment-details">
+                  <h4>UPI Payment</h4>
+                  <p>Choose your preferred UPI application to continue.</p>
+                </div>
+              }
+
+              @if (onlinePaymentMethod === 'card') {
+                <div class="payment-details">
+                  <h4>Card Payment</h4>
+                  <p>Credit and debit card payment option selected.</p>
+                </div>
+              }
+
+              @if (onlinePaymentMethod === 'netbanking') {
+                <div class="payment-details">
+                  <h4>Net Banking</h4>
+                  <p>Net banking payment option selected.</p>
+                </div>
+              }
+
+            </div>
+          }
+
+          <!-- ERROR MESSAGE -->
+          @if (errorMessage) {
+            <p class="error-message" role="alert">
+              {{ errorMessage }}
+            </p>
+          }
+
+          <!-- SUBMIT -->
+          <button
+            type="submit"
+            class="button"
+            [disabled]="submitting || addressMode !== 'view' || !selectedAddressId"
+          >
+            {{ submitting ? 'Placing Order...' : 'Place Order' }}
+          </button>
+
+        </form>
+
+        <!-- ORDER SUMMARY -->
+        <aside class="order-summary">
+
+          <h2>
+            ▤ Order Summary
+            ({{ totalItems$ | async }}
+            Item{{ (totalItems$ | async) === 1 ? '' : 's' }})
+          </h2>
+
+          <!-- ITEM TOTAL -->
+          <div class="summary-item">
+            <span>Item Total</span>
+
+            <strong>
+              {{ totalPrice$ | async | currency:'INR':'symbol':'1.0-0' }}
+            </strong>
+          </div>
+
+          <!-- DELIVERY FEE -->
+          <div class="summary-item">
+            <span>Delivery Fee</span>
+
+            <strong>
+              {{ deliveryFee | currency:'INR':'symbol':'1.0-0' }}
+            </strong>
+          </div>
+
+          <!-- DISCOUNT -->
+          <div class="summary-item">
+            <span>NF Discount</span>
+
+            <strong class="discount">
+              -{{ getDiscount((totalPrice$ | async) || 0) | currency:'INR':'symbol':'1.0-0' }}
+            </strong>
+          </div>
+
+          <hr />
+
+          <!-- FINAL AMOUNT -->
+          <div class="summary-total">
+            <strong>To Pay</strong>
+
+            <strong>
+              {{ calculatePayable((totalPrice$ | async) || 0) | currency:'INR':'symbol':'1.0-0' }}
+            </strong>
+          </div>
+
+        </aside>
+
+      </div>
+    }
+  }
+</div>

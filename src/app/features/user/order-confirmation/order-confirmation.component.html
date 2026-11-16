@@ -1,0 +1,75 @@
+<div class="confirmation-container">
+  @if (order) {
+    <div class="confirmation-card">
+      <div class="success-icon">✓</div>
+
+      <h1>Order Placed Successfully!</h1>
+
+      <p>Thank you for shopping with us.</p>
+
+      <div class="order-info">
+        <p>
+          <strong>Order ID:</strong>
+          {{ order.id ?? 'Unavailable' }}
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          {{ order.status }}
+        </p>
+
+        <p>
+          <strong>Payment:</strong>
+          {{ order.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment' }}
+        </p>
+
+        <p>
+          <strong>Total:</strong>
+          {{ order.total | currency:'INR':'symbol':'1.2-2' }}
+        </p>
+      </div>
+
+      <h2>Items Ordered</h2>
+
+      @for (item of order.items; track item.product.id) {
+        <div class="ordered-item">
+          <span>{{ item.product.name }} × {{ item.quantity }}</span>
+
+          <span>
+            {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.2-2' }}
+          </span>
+        </div>
+      }
+
+      <!-- ACTION BUTTONS -->
+      <!-- ACTION BUTTONS -->
+<div class="confirmation-actions">
+
+  <button
+    type="button"
+    class="button view-order-btn"
+    (click)="viewOrderDetails()"
+  >
+    View Order Details
+  </button>
+
+  <a routerLink="/products" class="button">
+    Continue Shopping
+  </a>
+
+</div>
+    </div>
+  } @else {
+    <div class="confirmation-card">
+      <h1>Order Details Unavailable</h1>
+
+      <p>
+        We couldn't find the details for this order on the current page.
+      </p>
+
+      <a routerLink="/products" class="button">
+        Continue Shopping
+      </a>
+    </div>
+  }
+</div>

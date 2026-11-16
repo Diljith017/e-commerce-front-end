@@ -1,0 +1,85 @@
+.sidebar {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: 250px;
+  height: calc(100vh - 16px);
+  overflow-y: auto;
+  background: #111827;
+  color: #ffffff;
+  padding: 23px 16px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.logo {
+  margin-bottom: 48px;
+  padding-left: 2px;
+}
+
+.logo h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.logo span {
+  color: #a3e635;
+}
+
+.logo p {
+  color: #9ca3af;
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-top: 7px;
+}
+
+.menu-title {
+  color: #6b7280;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 13px;
+}
+
+.menu a {
+  display: block;
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 12px 13px;
+  border-radius: 8px;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.menu a:hover {
+  background: #1f2937;
+  color: #a3e635;
+}
+
+.menu a.active {
+  background: #365314;
+  color: #bef264;
+  font-weight: 600;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid #374151;
+  padding-top: 18px;
+}
+
+.sidebar-footer p {
+  margin: 0 0 5px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sidebar-footer small {
+  color: #9ca3af;
+  font-size: 11px;
+}

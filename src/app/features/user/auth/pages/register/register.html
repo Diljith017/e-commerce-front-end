@@ -1,0 +1,282 @@
+<section class="auth-page">
+  <div class="auth-container">
+
+    <div class="auth-brand">
+      <div class="logo-icon">NF</div>
+      <h1>NUTRIFORGE</h1>
+      <p>BUILD STRONGER. LIVE BETTER.</p>
+    </div>
+
+    <div class="auth-card">
+      <h2>Create Account</h2>
+
+      <p class="auth-subtitle">
+        Join NutriForge and start your fitness journey.
+      </p>
+
+      @if (error$ | async; as error) {
+        <div class="error-message" role="alert">
+          {{ error }}
+        </div>
+      }
+
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        novalidate
+      >
+
+        <!-- NAME -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            [class.invalid-input]="(f.name.dirty || f.name.touched) && f.name.invalid"
+          />
+
+          @if ((f.name.dirty || f.name.touched) && f.name.errors) {
+            <small class="field-error">
+              @if (f.name.errors['required']) {
+                Full name is required.
+              }
+
+              @if (f.name.errors['minlength']) {
+                Minimum 3 characters required.
+              }
+
+              @if (f.name.errors['maxlength']) {
+                Maximum 50 characters allowed.
+              }
+
+              @if (f.name.errors['pattern']) {
+                Only letters and spaces are allowed.
+              }
+            </small>
+          }
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            [class.invalid-input]="(f.email.dirty || f.email.touched) && f.email.invalid"
+          />
+
+          @if (f.email.pending) {
+            <small class="field-info">
+              Checking email availability...
+            </small>
+          }
+
+        @if ((f.email.dirty || f.email.touched) && f.email.errors) {
+  <small class="field-error">
+
+    @if (f.email.errors['required']) {
+      Email is required.
+    }
+
+    @if (f.email.errors['email']) {
+      Enter a valid email address.
+    }
+
+    @if (f.email.errors['pattern']) {
+      Email must start with a letter.
+    }
+
+    @if (f.email.errors['emailTaken']) {
+      This email is already registered.
+    }
+
+  </small>
+}
+        </div>
+
+        <!-- PHONE -->
+        <div class="form-group">
+          <label for="phone">Mobile Number</label>
+
+          <input
+            id="phone"
+            type="tel"
+            formControlName="phone"
+            placeholder="10-digit mobile number"
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel"
+            [class.invalid-input]="(f.phone.dirty || f.phone.touched) && f.phone.invalid"
+          />
+
+          @if ((f.phone.dirty || f.phone.touched) && f.phone.errors) {
+            <small class="field-error">
+              @if (f.phone.errors['required']) {
+                Mobile number is required.
+              }
+
+              @if (f.phone.errors['pattern']) {
+                Enter a valid 10-digit Indian mobile number.
+              }
+            </small>
+          }
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+          <label for="password">Password</label>
+
+          <div class="password-field">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Create a strong password"
+              autocomplete="new-password"
+              [class.invalid-input]="(f.password.dirty || f.password.touched) && f.password.invalid"
+            />
+
+            <button
+              type="button"
+              (click)="togglePassword()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            >
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+
+          @if (f.password.value) {
+            <div class="password-strength">
+              <div class="strength-track">
+                <div
+                  class="strength-fill"
+                  [style.width]="(passwordStrength * 20) + '%'"
+                  [class.weak]="passwordStrength <= 2"
+                  [class.medium]="passwordStrength > 2 && passwordStrength < 5"
+                  [class.strong]="passwordStrength === 5"
+                ></div>
+              </div>
+
+              <small>
+                Password strength: {{ passwordStrengthLabel }}
+              </small>
+            </div>
+          }
+
+          @if ((f.password.dirty || f.password.touched) && f.password.errors) {
+            <small class="field-error">
+              @if (f.password.errors['required']) {
+                Password is required.
+              }
+
+              @if (f.password.errors['minlength']) {
+                Minimum 8 characters required.
+              }
+
+              @if (f.password.errors['maxlength']) {
+                Maximum 32 characters allowed.
+              }
+
+              @if (f.password.errors['pattern']) {
+                Include uppercase, lowercase, number and special character.
+              }
+            </small>
+          }
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+
+          <div class="password-field">
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="Confirm your password"
+              autocomplete="new-password"
+              [class.invalid-input]="
+                (f.confirmPassword.dirty || f.confirmPassword.touched) &&
+                (f.confirmPassword.invalid || registerForm.errors?.['passwordMismatch'])
+              "
+            />
+
+            <button
+              type="button"
+              (click)="toggleConfirmPassword()"
+              [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+            >
+              {{ showConfirmPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+
+          @if (
+            (f.confirmPassword.dirty || f.confirmPassword.touched) &&
+            f.confirmPassword.errors?.['required']
+          ) {
+            <small class="field-error">
+              Please confirm your password.
+            </small>
+          }
+
+          @if (
+            (f.confirmPassword.dirty || f.confirmPassword.touched) &&
+            registerForm.errors?.['passwordMismatch']
+          ) {
+            <small class="field-error">
+              Passwords do not match.
+            </small>
+          }
+        </div>
+
+        <!-- TERMS -->
+        <div class="terms-group">
+          <label class="terms-label">
+            <input
+              type="checkbox"
+              formControlName="terms"
+            />
+
+            <span>
+              I agree to the Terms & Conditions.
+            </span>
+          </label>
+
+          @if ((f.terms.dirty || f.terms.touched) && f.terms.invalid) {
+            <small class="field-error">
+              You must accept the Terms & Conditions.
+            </small>
+          }
+        </div>
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          class="register-btn"
+          [disabled]="(loading$ | async) === true || registerForm.pending"
+        >
+          @if (loading$ | async) {
+            Creating Account...
+          } @else {
+            Create Account
+          }
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        <span>Already have an account?</span>
+        <a routerLink="/login">Login</a>
+      </div>
+
+    </div>
+  </div>
+</section>

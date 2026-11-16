@@ -1,0 +1,145 @@
+<section class="auth-page">
+
+  <div class="auth-container">
+
+    <!-- BRAND -->
+    <div class="auth-brand">
+      <div class="logo-icon">NF</div>
+      <h1>NUTRIFORGE</h1>
+      <p>BUILD STRONGER. LIVE BETTER.</p>
+    </div>
+
+    <div class="auth-card">
+
+      <h2>Welcome Back</h2>
+
+      <p class="auth-subtitle">
+        Login to continue your fitness journey.
+      </p>
+
+      <!-- SERVER ERROR -->
+      @if (error$ | async; as error) {
+        <div class="error-message" role="alert">
+          {{ error }}
+        </div>
+      }
+
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        novalidate
+      >
+
+        <!-- EMAIL -->
+        <div class="form-group">
+
+          <label for="email">Email Address</label>
+
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            [class.invalid-input]="
+              (f.email.dirty || f.email.touched) && f.email.invalid
+            "
+          />
+
+         @if ((f.email.dirty || f.email.touched) && f.email.errors) {
+  <small class="field-error">
+
+    @if (f.email.errors['required']) {
+      Email is required.
+    }
+
+    @if (f.email.errors['email']) {
+      Enter a valid email address.
+    }
+
+    @if (f.email.errors['pattern']) {
+      Email must start with a letter.
+    }
+
+  </small>
+}
+
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+
+          <label for="password">Password</label>
+
+          <div class="password-field">
+
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              [class.invalid-input]="
+                (f.password.dirty || f.password.touched) && f.password.invalid
+              "
+            />
+
+            <button
+              type="button"
+              (click)="togglePassword()"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            >
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+
+          </div>
+
+         @if ((f.password.dirty || f.password.touched) && f.password.errors) {
+  <small class="field-error">
+
+    @if (f.password.errors['required']) {
+      Password is required.
+    }
+
+    @if (f.password.errors['minlength']) {
+      Password must contain at least 8 characters.
+    }
+
+  </small>
+}
+
+        </div>
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          class="login-btn"
+          [disabled]="(loading$ | async) === true || loginForm.pending"
+        >
+
+          @if (loading$ | async) {
+            Logging in...
+          } @else {
+            Login
+          }
+
+        </button>
+
+      </form>
+
+      <!-- FOOTER -->
+      <div class="auth-footer">
+
+        <span>Don't have an account?</span>
+
+        <a routerLink="/register">
+          Create Account
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

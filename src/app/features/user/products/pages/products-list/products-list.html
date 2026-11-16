@@ -1,0 +1,117 @@
+<section class="products-page">
+
+  <h1>Our Supplements</h1>
+
+  <p class="subtitle">
+    Explore our fitness nutrition collection.
+  </p>
+
+  <!-- Search, Filter and Sort -->
+  <div class="shop-toolbar">
+
+    <input
+      type="text"
+      placeholder="Search supplements or brands..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onFiltersChanged()"
+    />
+
+    @if (showCategorySelector) {
+      <select
+        [(ngModel)]="selectedCategory"
+        (ngModelChange)="onFiltersChanged()">
+
+        <option value="All">All Categories</option>
+        <option value="Whey Protein">Whey Protein</option>
+        <option value="Creatine">Creatine</option>
+        <option value="Pre-Workout">Pre-Workout</option>
+        <option value="Mass Gainer">Mass Gainer</option>
+        <option value="Health & Wellness">Health & Wellness</option>
+
+      </select>
+    }
+
+    <select
+      [(ngModel)]="sortOrder"
+      (ngModelChange)="onFiltersChanged()">
+
+      <option value="default">Default Order</option>
+      <option value="low-to-high">Price: Low to High</option>
+      <option value="high-to-low">Price: High to Low</option>
+
+    </select>
+
+    <button type="button" (click)="resetFilters()">
+      Reset Filters
+    </button>
+
+  </div>
+
+  <!-- Products -->
+  @if (loading$ | async) {
+
+    <p>Loading products...</p>
+
+  } @else {
+
+    @if (errorMessage$ | async; as error) {
+
+      <p class="error">{{ error }}</p>
+
+      <button type="button" (click)="retryLoadingProducts()">
+        Try Again
+      </button>
+
+    } @else {
+
+      @if (products$ | async; as products) {
+
+        @if (getFilteredProducts(products); as filteredProducts) {
+
+          <p class="product-count">
+            Showing
+            {{ filteredProducts.length === 0 ? 0 : (currentPage - 1) * pageSize + 1 }}
+            -
+            {{ (currentPage - 1) * pageSize + getPaginatedProducts(filteredProducts).length }}
+            of {{ filteredProducts.length }} products
+          </p>
+
+          <div class="product-grid">
+
+            @for (
+              product of getPaginatedProducts(filteredProducts);
+              track product.id
+            ) {
+
+              <app-product-card
+                [product]="product">
+              </app-product-card>
+
+            } @empty {
+
+              <p class="no-products">
+                No products found. Try another search or category.
+              </p>
+
+            }
+
+          </div>
+
+          <!-- Reusable Pagination -->
+          <app-pagination
+            [currentPage]="currentPage"
+            [totalItems]="filteredProducts.length"
+            [pageSize]="pageSize"
+            (pageChange)="onPageChange($event)"
+            (pageSizeChange)="onPageSizeChange($event)">
+          </app-pagination>
+
+        }
+
+      }
+
+    }
+
+  }
+
+</section>

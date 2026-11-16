@@ -1,0 +1,282 @@
+<section class="my-orders-page">
+
+  <div class="page-header">
+
+
+    @if (successMessage) {
+  <div class="success-message">
+    ✓ {{ successMessage }}
+  </div>
+}
+    <h1>My Orders</h1>
+    <p>View your order history and purchase details.</p>
+  </div>
+
+  @if (loading) {
+    <div class="message">
+      <p>Loading your orders...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="error-box">
+      <p>{{ errorMessage }}</p>
+
+      <button type="button" (click)="loadOrders()">
+        Try Again
+      </button>
+    </div>
+  } @else if (orders.length === 0) {
+    <div class="empty-state">
+      <h2>No orders yet</h2>
+      <p>You haven't placed any orders yet.</p>
+
+      <a routerLink="/products" class="shop-button">
+        Start Shopping
+      </a>
+    </div>
+  } @else {
+
+    <div class="orders-list">
+
+      <!-- Filters and Sorting -->
+<div class="orders-controls">
+  <div class="filter-group">
+    <label for="statusFilter">Filter by status</label>
+
+    <select
+      id="statusFilter"
+      [value]="selectedStatus"
+      (change)="onStatusChange($event)"
+    >
+      <option value="All">All Orders</option>
+      <option value="Pending">Pending</option>
+      <option value="Processing">Processing</option>
+      <option value="Shipped">Shipped</option>
+      <option value="Delivered">Delivered</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label for="sortOrders">Sort by date</label>
+
+    <select
+      id="sortOrders"
+      [value]="sortOrder"
+      (change)="onSortChange($event)"
+    >
+      <option value="newest">Newest First</option>
+      <option value="oldest">Oldest First</option>
+    </select>
+  </div>
+</div>
+
+<!-- Orders List -->
+@if (filteredOrders.length === 0) {
+  <div class="empty-state">
+    <h2>No matching orders</h2>
+    <p>Try selecting a different order status.</p>
+  </div>
+} @else {
+  <div class="orders-list">
+    @for (order of filteredOrders; track order.id) {
+      <article class="order-card">
+
+        <div class="order-header">
+          <div>
+            <h2>Order #{{ order.orderNumber }}</h2>
+            <p class="order-date">
+              {{ order.createdAt | date:'medium' }}
+            </p>
+          </div>
+
+          <span class="status">{{ order.status }}</span>
+        </div>
+
+
+        
+
+        <div class="order-items">
+          @for (item of order.items; track item.product.id) {
+            <div class="order-item">
+              <img
+                [src]="item.product.image"
+                [alt]="item.product.name"
+              />
+
+              <div class="item-info">
+                <h3>{{ item.product.name }}</h3>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>
+                  Price:
+                  {{ item.product.price | currency:'INR':'symbol':'1.2-2' }}
+                </p>
+              </div>
+
+              <strong>
+                {{
+                  item.product.price * item.quantity
+                    | currency:'INR':'symbol':'1.2-2'
+                }}
+              </strong>
+            </div>
+          }
+        </div>
+
+        <div class="order-footer">
+          <p>Payment: {{ order.paymentMethod | uppercase }}</p>
+
+          <p class="order-total">
+            Total:
+            {{ order.total | currency:'INR':'symbol':'1.2-2' }}
+          </p>
+        </div>
+
+       <div class="order-actions">
+
+  <a
+    [routerLink]="['/my-orders', order.id]"
+    class="details-button">
+    View Details →
+  </a>
+
+ 
+
+</div>
+
+<!-- Cancellation Information -->
+@if (order.status === 'Cancelled') {
+
+  <div class="cancellation-info">
+
+    <h4>Order Cancelled</h4>
+
+    <p>
+      <strong>Reason:</strong>
+      {{ order.cancellationReason || 'Not provided' }}
+    </p>
+
+    @if (order.cancellationComment) {
+      <p>
+        <strong>Additional Comments:</strong>
+        {{ order.cancellationComment }}
+      </p>
+    }
+
+    @if (order.cancelledAt) {
+      <p>
+        <strong>Cancelled On:</strong>
+        {{ order.cancelledAt | date:'medium' }}
+      </p>
+    }
+
+  </div>
+
+}
+
+      </article>
+    }
+  </div>
+}
+
+    </div>
+
+  }
+
+
+  <!-- Cancellation Popup -->
+@if (orderToCancel) {
+
+  <div class="cancel-modal-overlay">
+
+    <div class="cancel-modal">
+
+      <div class="modal-header">
+
+        <h2>Cancel Order</h2>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeCancelDialog()"
+          [disabled]="cancelling">
+          ×
+        </button>
+
+      </div>
+
+      <p class="modal-description">
+        Are you sure you want to cancel order
+        <strong>#{{ orderToCancel.id }}</strong>?
+      </p>
+
+      <form (ngSubmit)="confirmCancellation()">
+
+        <label for="cancelReason">
+          Why do you want to cancel this order?
+        </label>
+
+        <select
+          id="cancelReason"
+          name="cancellationReason"
+          [(ngModel)]="cancellationReason">
+
+          <option value="" disabled>
+            Select a reason
+          </option>
+
+          @for (reason of cancellationReasons; track reason) {
+            <option [value]="reason">
+              {{ reason }}
+            </option>
+          }
+
+        </select>
+
+        <label for="cancelComment">
+          Additional Comments (Optional)
+        </label>
+
+        <textarea
+          id="cancelComment"
+          name="cancellationComment"
+          [(ngModel)]="cancellationComment"
+          placeholder="Tell us more about your cancellation..."
+          rows="3">
+        </textarea>
+
+        @if (cancellationError) {
+          <p class="cancel-error">
+            {{ cancellationError }}
+          </p>
+        }
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="go-back-button"
+            (click)="closeCancelDialog()"
+            [disabled]="cancelling">
+            Go Back
+          </button>
+
+          <button
+            type="submit"
+            class="confirm-cancel-button"
+            [disabled]="cancelling">
+
+            {{ cancelling ? 'Cancelling...' : 'Confirm Cancellation' }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+}
+
+</section>

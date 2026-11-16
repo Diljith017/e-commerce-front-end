@@ -1,0 +1,261 @@
+<div class="user-details-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <h2>User Details</h2>
+      <p>View customer information and order history</p>
+    </div>
+
+    <button class="back-btn" (click)="goBack()">
+      ← Back to Users
+    </button>
+  </div>
+
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="message">
+      Loading customer details...
+    </div>
+  }
+
+  <!-- ERROR -->
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (user && !loading) {
+
+    <!-- CUSTOMER PROFILE -->
+    <div class="profile-card">
+
+      <div class="profile-info">
+
+        <div class="avatar">
+          @if (user.profilePhoto) {
+            <img [src]="user.profilePhoto" alt="Customer profile">
+          } @else {
+            {{ user.name.charAt(0).toUpperCase() }}
+          }
+        </div>
+
+        <div>
+          <h3>{{ user.name }}</h3>
+          <p>{{ user.email }}</p>
+
+          <span
+            class="status-badge"
+            [class.active]="isActive"
+            [class.blocked]="!isActive"
+          >
+            {{ user.status || 'active' }}
+          </span>
+        </div>
+
+      </div>
+
+      <div class="profile-role">
+        CUSTOMER
+      </div>
+
+    </div>
+
+    <!-- STATISTICS -->
+    <div class="stats-container">
+
+      <div class="stat-card">
+        <span>Total Orders</span>
+        <h3>{{ totalOrders }}</h3>
+      </div>
+
+      <div class="stat-card">
+        <span>Total Amount Spent</span>
+        <h3>₹{{ totalSpent | number:'1.0-0' }}</h3>
+      </div>
+
+      <div class="stat-card">
+        <span>Account Status</span>
+        <h3 [class.active-text]="isActive"
+            [class.blocked-text]="!isActive">
+          {{ isActive ? 'Active' : 'Blocked' }}
+        </h3>
+      </div>
+
+    </div>
+
+    <!-- PERSONAL INFORMATION -->
+    <div class="details-card">
+
+      <h3>Personal Information</h3>
+
+      <div class="info-grid">
+
+        <div>
+          <label>Full Name</label>
+          <p>{{ user.name }}</p>
+        </div>
+
+        <div>
+          <label>Email Address</label>
+          <p>{{ user.email }}</p>
+        </div>
+
+        <div>
+          <label>Phone Number</label>
+          <p>{{ user.phone || 'Not provided' }}</p>
+        </div>
+
+        <div>
+          <label>Account Role</label>
+          <p>{{ user.role | titlecase }}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ADDRESS INFORMATION -->
+    <div class="details-card">
+
+      <h3>Address Information</h3>
+
+      @if (user.addresses?.length) {
+
+        @for (address of user.addresses; track address.id) {
+
+          <div class="address-card">
+
+            <div class="address-header">
+              <strong>{{ address.label }}</strong>
+
+              @if (address.isDefault) {
+                <span class="default-badge">Default</span>
+              }
+            </div>
+
+            <p>{{ address.fullName }}</p>
+            <p>{{ address.address }}</p>
+            <p>
+              {{ address.city }}, {{ address.state }} -
+              {{ address.pincode }}
+            </p>
+            <p>{{ address.phone }}</p>
+
+          </div>
+
+        }
+
+      } @else {
+
+        <div class="info-grid">
+
+          <div class="full-width">
+            <label>Address</label>
+            <p>{{ user.address || 'Not provided' }}</p>
+          </div>
+
+          <div>
+            <label>City</label>
+            <p>{{ user.city || 'Not provided' }}</p>
+          </div>
+
+          <div>
+            <label>State</label>
+            <p>{{ user.state || 'Not provided' }}</p>
+          </div>
+
+          <div>
+            <label>Pincode</label>
+            <p>{{ user.pincode || 'Not provided' }}</p>
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+    <!-- ORDER HISTORY -->
+    <div class="details-card">
+
+      <div class="section-header">
+        <h3>Order History</h3>
+        <span>{{ totalOrders }} Orders</span>
+      </div>
+
+      @if (orders.length > 0) {
+
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Payment</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              @for (order of orders; track order.id) {
+
+                <tr>
+
+                  <td>
+                    #{{ order.orderNumber || order.id }}
+                  </td>
+
+                  <td>
+                    {{ order.createdAt | date:'dd MMM yyyy' }}
+                  </td>
+
+                  <td>
+                    {{ order.items.length }} item(s)
+                  </td>
+
+                  <td>
+                    {{ order.paymentMethod | uppercase }}
+                  </td>
+
+                  <td>
+                    ₹{{ order.total }}
+                  </td>
+
+                  <td>
+                    <span
+                      [class]="'order-status ' + order.status.toLowerCase()"
+                    >
+                      {{ order.status }}
+                    </span>
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      } @else {
+
+        <div class="empty-message">
+          This customer hasn't placed any orders yet.
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

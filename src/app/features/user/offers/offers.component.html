@@ -1,0 +1,193 @@
+<!-- HERO -->
+<section class="offers-hero">
+  <div class="hero-content">
+    <span class="eyebrow">NUTRIFORGE EXCLUSIVE DEALS</span>
+
+    <h1>
+      BIG DEALS.
+      <span>BIGGER GAINS.</span>
+    </h1>
+
+    <p>
+      Discover special deals on your fitness essentials.
+      Find your favorites and save on your next order.
+    </p>
+
+    <a routerLink="/products" class="primary-button">
+      SHOP ALL PRODUCTS →
+    </a>
+  </div>
+
+  <div class="hero-visual">
+    <span class="hero-percent">%</span>
+    <span class="hero-label">SPECIAL OFFERS</span>
+    <span class="hero-subtitle">MORE VALUE. MORE MOTIVATION.</span>
+  </div>
+</section>
+
+
+<!-- FLASH SALE COUNTDOWN -->
+
+<section class="countdown-section">
+
+  <div class="countdown-content">
+
+    <div class="countdown-heading">
+
+      <span class="eyebrow">🔥 EXCLUSIVE FLASH SALE</span>
+
+      <h2>
+        OFFERS END <span>SOON!</span>
+      </h2>
+
+      <p>
+        Grab your favorite fitness essentials before time runs out.
+      </p>
+
+    </div>
+
+    @if (!offerExpired) {
+
+      <div class="countdown-timer">
+
+        <div class="time-box">
+          <h3>{{ formatTime(days) }}</h3>
+          <span>DAYS</span>
+        </div>
+
+        <span class="time-separator">:</span>
+
+        <div class="time-box">
+          <h3>{{ formatTime(hours) }}</h3>
+          <span>HOURS</span>
+        </div>
+
+        <span class="time-separator">:</span>
+
+        <div class="time-box">
+          <h3>{{ formatTime(minutes) }}</h3>
+          <span>MINUTES</span>
+        </div>
+
+        <span class="time-separator">:</span>
+
+        <div class="time-box">
+          <h3>{{ formatTime(seconds) }}</h3>
+          <span>SECONDS</span>
+        </div>
+
+      </div>
+
+    } @else {
+
+      <div class="expired-message">
+        ⏰ OFFER EXPIRED!
+      </div>
+
+    }
+
+  </div>
+
+</section>
+
+<!-- OFFER BENEFITS -->
+<section class="offer-highlights">
+  <div>
+    <span>🔥</span>
+    <p>Special Deals</p>
+  </div>
+
+  <div>
+    <span>🏷️</span>
+    <p>Discount Prices</p>
+  </div>
+
+  <div>
+    <span>💪</span>
+    <p>Fitness Essentials</p>
+  </div>
+
+  <div>
+    <span>⚡</span>
+    <p>Limited Promotions</p>
+  </div>
+</section>
+
+<!-- OFFERS GRID -->
+<section class="offers-section">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">DON'T MISS OUT</span>
+      <h2>LIMITED-TIME <span>DEALS</span></h2>
+      <p>Explore our sample promotions on popular supplement categories.</p>
+    </div>
+
+    <a routerLink="/products" class="view-all">
+      VIEW ALL PRODUCTS →
+    </a>
+  </div>
+
+  <div class="offers-grid">
+    @for (offer of offers; track offer.id) {
+      <article class="offer-card">
+
+        <div class="product-visual">
+          <span class="offer-label">{{ offer.label }}</span>
+          <span class="discount-badge">-{{ offer.discount }}%</span>
+
+          <span class="product-icon">{{ offer.icon }}</span>
+
+          <span class="demo-label">SAMPLE OFFER</span>
+        </div>
+
+        <div class="offer-info">
+          <span class="product-category">{{ offer.category }}</span>
+
+          <h3>{{ offer.name }}</h3>
+
+          <div class="price-row">
+            <span class="offer-price">
+              ₹{{ offer.offerPrice }}
+            </span>
+
+            <span class="original-price">
+              ₹{{ offer.originalPrice }}
+            </span>
+          </div>
+
+          <p class="saving-text">
+            Example savings: ₹{{ offer.originalPrice - offer.offerPrice }}
+          </p>
+
+          <a
+            routerLink="/products"
+            [queryParams]="{ category: offer.category }"
+            class="offer-button">
+            EXPLORE CATEGORY →
+          </a>
+        </div>
+
+      </article>
+    }
+  </div>
+</section>
+
+<!-- COMBO PROMOTION -->
+<section class="combo-banner">
+  <div>
+    <span class="eyebrow">BUILD YOUR STACK</span>
+
+    <h2>YOUR GOALS.<br><span>YOUR COMBO.</span></h2>
+
+    <p>
+      Explore protein, creatine, and pre-workout products
+      to find the combination that suits your routine.
+    </p>
+
+    <a routerLink="/products" class="combo-button">
+      EXPLORE PRODUCTS →
+    </a>
+  </div>
+
+  <div class="combo-symbol">N<span>+</span></div>
+</section>

@@ -1,0 +1,278 @@
+/* ==========================================
+   NUTRIFORGE — PRODUCTS LIST
+   Black + Electric Blue + Acid Lime
+========================================== */
+
+:host {
+  display: block;
+  min-height: 65vh;
+  background: #08090d;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+
+  --bg-black: #08090d;
+  --bg-card: #12141c;
+  --blue: #2457ff;
+  --lime: #c7ff00;
+  --white: #ffffff;
+  --gray: #a1a6b3;
+  --border: #292c37;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ===== PAGE LAYOUT ===== */
+
+.products-page {
+  max-width: 1400px;
+  min-height: 65vh;
+  margin: 0 auto;
+  padding: 55px 6%;
+  background: #08090d;
+  color: #ffffff;
+}
+
+/* ===== PAGE HEADING ===== */
+
+.products-page h1 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+
+.products-page h1::after {
+  content: '';
+  display: block;
+  width: 65px;
+  height: 4px;
+  margin-top: 15px;
+  border-radius: 3px;
+  background: #c7ff00;
+}
+
+.subtitle {
+  margin: 0 0 30px;
+  color: #a1a6b3;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* ===== SEARCH, FILTER AND SORT ===== */
+
+.shop-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  padding: 20px;
+  border: 1px solid #292c37;
+  border-radius: 10px;
+  background: #12141c;
+}
+
+.shop-toolbar input,
+.shop-toolbar select {
+  flex: 1;
+  min-width: 170px;
+  min-height: 44px;
+  padding: 12px 14px;
+  border: 1px solid #292c37;
+  border-radius: 7px;
+  outline: none;
+  background: #08090d;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.shop-toolbar input::placeholder {
+  color: #858b9b;
+}
+
+.shop-toolbar input:focus,
+.shop-toolbar select:focus {
+  border-color: #2457ff;
+  box-shadow: 0 0 0 3px rgb(36 87 255 / 15%);
+}
+
+.shop-toolbar select {
+  cursor: pointer;
+}
+
+.shop-toolbar button {
+  min-height: 44px;
+  padding: 12px 18px;
+  border: 1px solid #2457ff;
+  border-radius: 7px;
+  background: #2457ff;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.shop-toolbar button:hover {
+  border-color: #c7ff00;
+  background: #c7ff00;
+  color: #08090d;
+  transform: translateY(-1px);
+}
+
+/* ===== PRODUCT COUNT ===== */
+
+.product-count {
+  margin: 0 0 22px;
+  color: #a1a6b3;
+  font-size: 13px;
+}
+
+.product-count strong {
+  color: #c7ff00;
+}
+
+/* ===== PRODUCT GRID ===== */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+/*
+  Product cards are separate components.
+  Their individual colors and backgrounds
+  may need to be updated in product-card.css.
+*/
+
+/* ===== LOADING ===== */
+
+.products-page > p:not(.subtitle):not(.product-count):not(.error):not(.no-products) {
+  color: #a1a6b3;
+  line-height: 1.8;
+}
+
+/* ===== ERROR MESSAGE ===== */
+
+.error {
+  margin: 0 0 14px;
+  padding: 18px;
+  border: 1px solid rgb(255 77 103 / 35%);
+  border-radius: 8px;
+  background: rgb(255 77 103 / 7%);
+  color: #ff7588;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.products-page > button {
+  padding: 12px 18px;
+  border: 1px solid #2457ff;
+  border-radius: 7px;
+  background: #2457ff;
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.products-page > button:hover {
+  border-color: #c7ff00;
+  background: #c7ff00;
+  color: #08090d;
+}
+
+/* ===== EMPTY SEARCH RESULTS ===== */
+
+.no-products {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 45px 20px;
+  border: 1px solid #292c37;
+  border-radius: 10px;
+  background: #12141c;
+  color: #a1a6b3;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ===== RESPONSIVE LAYOUT ===== */
+
+@media (max-width: 1100px) {
+  .products-page {
+    padding-right: 4%;
+    padding-left: 4%;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 750px) {
+  .products-page {
+    padding: 35px 18px;
+  }
+
+  .products-page h1 {
+    font-size: 30px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .shop-toolbar {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .shop-toolbar input,
+  .shop-toolbar select {
+    flex-basis: calc(50% - 12px);
+    min-width: 0;
+  }
+
+  .shop-toolbar button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-page {
+    padding: 28px 14px;
+  }
+
+  .products-page h1 {
+    font-size: 27px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .shop-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .shop-toolbar input,
+  .shop-toolbar select,
+  .shop-toolbar button {
+    width: 100%;
+    min-width: 0;
+    flex: auto;
+  }
+}

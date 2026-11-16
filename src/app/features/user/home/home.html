@@ -1,0 +1,262 @@
+<!-- ================= HERO SECTION ================= -->
+
+<section class="hero">
+  <div class="hero-content">
+
+    <span class="eyebrow">
+      YOUR FITNESS. YOUR JOURNEY.
+    </span>
+
+    <h1>
+      FUEL YOUR
+      <span>AMBITION.</span>
+    </h1>
+
+    <p class="hero-description">
+      Discover sports nutrition products designed to complement
+      your training routine and fitness goals.
+    </p>
+
+    <div class="hero-actions">
+      <a routerLink="/products" class="primary-button">
+        Explore Products <span>→</span>
+      </a>
+
+      <a href="#categories" class="secondary-button">
+        Explore Categories
+      </a>
+    </div>
+
+    <div class="hero-highlights">
+      <div>
+        <strong>01</strong>
+        <span>Explore Products</span>
+      </div>
+
+      <div>
+        <strong>02</strong>
+        <span>Find Your Essentials</span>
+      </div>
+
+      <div>
+        <strong>03</strong>
+        <span>Shop With Ease</span>
+      </div>
+    </div>
+
+  </div>
+
+ <div class="hero-visual">
+  <img
+    src="/images/nutriforge-hero.png"
+    alt="NutriForge Sports Nutrition"
+  />
+</div>
+</section>
+
+
+<!-- ================= TRUST STRIP ================= -->
+
+<section class="trust-strip">
+  <div>
+    <span>01</span>
+    <p>Explore Nutrition</p>
+  </div>
+
+  <div>
+    <span>02</span>
+    <p>Browse Categories</p>
+  </div>
+
+  <div>
+    <span>03</span>
+    <p>Simple Shopping</p>
+  </div>
+
+  <div>
+    <span>04</span>
+    <p>Track Your Orders</p>
+  </div>
+</section>
+
+
+<!-- ================= CATEGORIES ================= -->
+
+<section class="categories" id="categories">
+
+  <div class="section-heading">
+    <div>
+      <span class="section-eyebrow">FIND YOUR ESSENTIALS</span>
+      <h2>SHOP BY <span>CATEGORY.</span></h2>
+      <p>Explore nutrition products for different training needs.</p>
+    </div>
+
+    <a routerLink="/products" class="text-link">
+      View All Products →
+    </a>
+  </div>
+
+  <div class="category-grid">
+
+    @for (category of categories; track category.name) {
+      <a
+        class="category-card"
+        routerLink="/products"
+        [queryParams]="{ category: category.category }"
+      >
+        <div class="category-top">
+          <span class="category-icon">{{ category.icon }}</span>
+          <span class="category-arrow">↗</span>
+        </div>
+
+        <h3>{{ category.name }}</h3>
+
+        <p>{{ category.description }}</p>
+
+        <span class="category-explore">
+          EXPLORE CATEGORY →
+        </span>
+      </a>
+    }
+
+  </div>
+</section>
+
+
+<!-- ================= PROMOTIONAL BANNER ================= -->
+
+<section class="promo-section">
+  <div class="promo-content">
+
+    <span class="section-eyebrow">YOUR NEXT STEP STARTS HERE</span>
+
+    <h2>
+      YOUR GOALS.
+      <span>YOUR GAME PLAN.</span>
+    </h2>
+
+    <p>
+      Find products that complement your routine.
+      Explore the collection and choose what works for you.
+    </p>
+
+    <a routerLink="/products" class="primary-button">
+      Shop the Collection →
+    </a>
+
+  </div>
+
+  <div class="promo-visual">
+    <span class="promo-symbol">✦</span>
+    <span class="promo-caption">STAY CONSISTENT.</span>
+  </div>
+</section>
+
+
+<!-- ================= WHY CHOOSE US ================= -->
+
+<section class="benefits-section">
+
+  <div class="section-heading centered-heading">
+    <div>
+      <span class="section-eyebrow">A BETTER SHOPPING EXPERIENCE</span>
+      <h2>MADE FOR YOUR <span>ROUTINE.</span></h2>
+      <p>Everything you need for a convenient shopping experience.</p>
+    </div>
+  </div>
+
+  <div class="benefits-grid">
+
+    @for (benefit of benefits; track benefit.title) {
+      <article class="benefit-card">
+
+        <div class="benefit-icon">
+          {{ benefit.icon }}
+        </div>
+
+        <h3>{{ benefit.title }}</h3>
+
+        <p>{{ benefit.description }}</p>
+
+      </article>
+    }
+
+  </div>
+</section>
+
+
+<!-- ================= CUSTOMER FEEDBACK ================= -->
+
+<section class="testimonials-section">
+
+  <div class="section-heading">
+    <div>
+      <span class="section-eyebrow">COMMUNITY FEEDBACK</span>
+      <h2>THE SHOPPING <span>EXPERIENCE.</span></h2>
+     
+    </div>
+  </div>
+
+  <div class="testimonial-grid">
+
+    @for (testimonial of testimonials; track testimonial.name) {
+      <article class="testimonial-card">
+
+        <div class="testimonial-stars" aria-label="Example five-star rating">
+          @for (star of [1, 2, 3, 4, 5]; track star) {
+            <span>★</span>
+          }
+        </div>
+
+        <p class="testimonial-message">
+          "{{ testimonial.message }}"
+        </p>
+
+        <div class="testimonial-person">
+          <div class="testimonial-avatar">
+            {{ testimonial.name.charAt(0) }}
+          </div>
+
+          <div>
+            <h3>{{ testimonial.name }}</h3>
+            <span>{{ testimonial.role }}</span>
+          </div>
+        </div>
+
+      </article>
+    }
+
+  </div>
+
+  <p class="demo-disclaimer">
+    
+  </p>
+</section>
+
+
+<!-- ================= NEWSLETTER ================= -->
+
+<section class="newsletter-section">
+
+  <div class="newsletter-content">
+
+    <span class="section-eyebrow">STAY IN THE LOOP</span>
+
+    <h2>YOUR FITNESS JOURNEY <span>CONTINUES.</span></h2>
+
+    <p>
+      Visit our store to explore products and discover new additions
+      to the collection.
+    </p>
+
+    <a routerLink="/products" class="newsletter-button">
+      Explore Products →
+    </a>
+
+  </div>
+
+  <div class="newsletter-decoration">
+    <span>✦</span>
+  </div>
+
+</section>

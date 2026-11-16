@@ -1,0 +1,82 @@
+/* =========================================
+   ADMIN CONTAINER
+========================================= */
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #10131d;
+}
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  margin-left: 250px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #10131d;
+}
+
+/* =========================================
+   PAGE CONTENT
+========================================= */
+
+.page-content {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  background: #10131d;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   FIXED SIDEBAR
+========================================= */
+
+app-admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  z-index: 1000;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+.main-content::-webkit-scrollbar {
+  width: 7px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: #10131d;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #343b4c;
+  border-radius: 10px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #465168;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 250px;
+  }
+}

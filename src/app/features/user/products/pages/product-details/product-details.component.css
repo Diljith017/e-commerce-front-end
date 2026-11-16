@@ -1,0 +1,637 @@
+/* ==========================================
+   NUTRIFORGE — PRODUCT DETAILS
+   Black + Electric Blue + Acid Lime
+========================================== */
+
+:host {
+  display: block;
+  min-height: 65vh;
+  background: #08090d;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+
+  --bg-black: #08090d;
+  --bg-card: #12141c;
+  --blue: #2457ff;
+  --lime: #c7ff00;
+  --white: #ffffff;
+  --gray: #a1a6b3;
+  --border: #292c37;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Main Container */
+
+.details-container {
+  max-width: 1400px;
+  min-height: 65vh;
+  margin: 0 auto;
+  padding: 45px 6%;
+  background: #08090d;
+  color: #ffffff;
+}
+
+/* Back to Products */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  color: #a1a6b3;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #c7ff00;
+}
+
+/* Product Details Card */
+
+.product-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 45px;
+  padding: 35px;
+  border: 1px solid #292c37;
+  border-radius: 14px;
+  background:
+    radial-gradient(
+      ellipse at top right,
+      rgb(36 87 255 / 8%),
+      transparent 50%
+    ),
+    #12141c;
+  transition: border-color 0.25s ease;
+}
+
+.product-details:hover {
+  border-color: rgb(36 87 255 / 55%);
+}
+
+/* Product Image */
+
+.product-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 420px;
+  padding: 25px;
+  overflow: hidden;
+  border: 1px solid #292c37;
+  border-radius: 12px;
+  background:
+    radial-gradient(
+      circle at center,
+      rgb(36 87 255 / 13%),
+      transparent 65%
+    ),
+    #08090d;
+}
+
+.product-image img {
+  display: block;
+  width: 100%;
+  max-width: 450px;
+  height: 380px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-image img:hover {
+  transform: scale(1.04);
+}
+
+/* Wishlist Heart Button - Always Visible */
+
+.wishlist-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #12141c;
+  color: #c7ff00;
+
+  border: 1px solid #2457ff;
+  border-radius: 8px;
+
+  font-size: 27px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Wishlist Active State */
+
+.wishlist-button.active {
+  background: #2457ff;
+  color: #c7ff00;
+  border-color: #c7ff00;
+  box-shadow: 0 0 12px rgb(199 255 0 / 20%);
+}
+
+/* Wishlist Hover */
+
+.wishlist-button:hover {
+  background: #2457ff;
+  color: #ffffff;
+  border-color: #c7ff00;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgb(36 87 255 / 40%);
+}
+
+.wishlist-button:active {
+  transform: scale(0.9);
+}
+
+.wishlist-button:focus-visible {
+  outline: 3px solid #c7ff00;
+  outline-offset: 3px;
+}
+
+/* Product Information */
+
+.product-info {
+  min-width: 0;
+}
+
+.brand {
+  margin: 0 0 12px;
+  color: #c7ff00;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.product-info h1 {
+  margin: 0 0 15px;
+  color: #ffffff;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+/* Rating */
+
+.rating {
+  margin: 16px 0;
+  color: #c7ff00;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Price */
+
+.price {
+  margin: 22px 0;
+  color: #c7ff00;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 900;
+}
+
+/* Category */
+
+.category {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 8px 12px;
+  border: 1px solid rgb(36 87 255 / 45%);
+  border-radius: 5px;
+  background: rgb(36 87 255 / 10%);
+  color: #a1b7ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Description */
+
+.description {
+  margin: 0;
+  color: #a1a6b3;
+  font-size: 14px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+/* Stock Status */
+
+.stock {
+  margin: 22px 0;
+  color: #c7ff00;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.stock.out-of-stock {
+  color: #ff657b;
+}
+
+/* Product Actions */
+
+.product-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.product-actions button {
+  flex: 1;
+  margin-top: 0;
+}
+
+/* Add to Cart Button */
+
+.cart-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 320px;
+  min-height: 50px;
+
+  padding: 15px 24px;
+
+  border: 1px solid #2457ff;
+  border-radius: 7px;
+
+  background: #2457ff;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.cart-button:hover:not(:disabled) {
+  border-color: #c7ff00;
+  background: #c7ff00;
+  color: #08090d;
+  transform: translateY(-2px);
+}
+
+.cart-button:focus-visible {
+  outline: 3px solid #c7ff00;
+  outline-offset: 4px;
+}
+
+.cart-button:disabled {
+  border-color: #454958;
+  background: #292c37;
+  color: #858b9b;
+  cursor: not-allowed;
+}
+
+/* Buy Now Button */
+
+.buy-button {
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+
+  background: #c7ff00;
+  color: #09090d;
+
+  border: none;
+  border-radius: 6px;
+
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  animation: buyPulse 2s infinite;
+}
+
+/* Buy Now Hover */
+
+.buy-button:hover:not(:disabled) {
+  background: #d9ff4d;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgb(199 255 0 / 35%);
+}
+
+/* Buy Now Click */
+
+.buy-button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+/* Buy Now Pulse Animation */
+
+@keyframes buyPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgb(199 255 0 / 30%);
+  }
+
+  50% {
+    box-shadow: 0 0 12px 3px rgb(199 255 0 / 25%);
+  }
+}
+
+/* Buy Now Shine Effect */
+
+.buy-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+
+  width: 50%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgb(255 255 255 / 50%),
+    transparent
+  );
+
+  transition: left 0.6s ease;
+}
+
+.buy-button:hover:not(:disabled)::before {
+  left: 150%;
+}
+
+.buy-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  animation: none;
+}
+
+/* Loading and Error Messages */
+
+.message,
+.error-message {
+  padding: 35px 24px;
+  border: 1px solid #292c37;
+  border-radius: 10px;
+  background: #12141c;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.message {
+  color: #a1a6b3;
+}
+
+.error-message {
+  border-color: rgb(255 77 103 / 35%);
+  background: rgb(255 77 103 / 7%);
+  color: #ff7588;
+}
+
+/* Similar Products Section */
+
+.similar-products {
+  margin-top: 70px;
+  padding-bottom: 50px;
+}
+
+.similar-heading {
+  margin-bottom: 30px;
+}
+
+.section-label {
+  color: #c7ff00;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.similar-heading h2 {
+  margin: 8px 0;
+  color: #ffffff;
+  font-size: 30px;
+}
+
+.similar-subtitle {
+  color: #a1a6b3;
+  font-size: 14px;
+}
+
+/* Similar Products Grid */
+
+.similar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.similar-card {
+  overflow: hidden;
+  background: #12141c;
+  border: 1px solid #292c37;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.similar-card:hover {
+  transform: translateY(-6px);
+  border-color: #2457ff;
+}
+
+/* Similar Product Image */
+
+.similar-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 210px;
+  padding: 15px;
+
+  background: #08090d;
+  overflow: hidden;
+}
+
+.similar-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Similar Product Information */
+
+.similar-info {
+  padding: 18px;
+}
+
+.similar-brand {
+  color: #a1a6b3;
+  font-size: 12px;
+}
+
+.similar-info h3 {
+  min-height: 40px;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.similar-rating {
+  color: #c7ff00;
+  font-size: 13px;
+}
+
+.similar-price {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* View Product Button */
+
+.view-product-button {
+  width: 100%;
+  padding: 11px;
+  margin-top: 10px;
+
+  background: #2457ff;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.view-product-button:hover {
+  background: #1744db;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 1000px) {
+  .similar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .details-container {
+    padding: 35px 4%;
+  }
+
+  .product-details {
+    gap: 28px;
+    padding: 25px;
+  }
+
+  .product-image {
+    min-height: 340px;
+    padding: 18px;
+  }
+
+  .product-image img {
+    height: 300px;
+  }
+}
+
+@media (max-width: 700px) {
+  .details-container {
+    padding: 28px 16px;
+  }
+
+  .product-details {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 25px;
+    padding: 18px;
+  }
+
+  .product-image {
+    min-height: 280px;
+  }
+
+  .product-image img {
+    height: 260px;
+  }
+
+  .product-info h1 {
+    font-size: 28px;
+  }
+
+  .price {
+    font-size: 30px;
+  }
+
+  .cart-button {
+    max-width: none;
+  }
+}
+
+@media (max-width: 550px) {
+  .similar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .similar-heading h2 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 400px) {
+  .details-container {
+    padding: 22px 12px;
+  }
+
+  .product-details {
+    padding: 14px;
+  }
+
+  .product-image {
+    min-height: 230px;
+    padding: 12px;
+  }
+
+  .product-image img {
+    height: 220px;
+  }
+
+  .product-info h1 {
+    font-size: 24px;
+  }
+}

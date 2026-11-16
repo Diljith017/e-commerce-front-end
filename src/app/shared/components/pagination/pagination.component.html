@@ -1,0 +1,49 @@
+@if (totalPages > 0) {
+  <div class="pagination-container">
+
+    <div class="page-size">
+      <label>Show:</label>
+
+      <select [value]="pageSize" (change)="changePageSize($event)">
+        <option value="8">8</option>
+        <option value="12">12</option>
+        <option value="16">16</option>
+        <option value="24">24</option>
+      </select>
+
+      <span>per page</span>
+    </div>
+
+    <div class="pagination-buttons">
+
+      <button
+        type="button"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1">
+        Previous
+      </button>
+
+      @for (page of pages; track page) {
+        <button
+          type="button"
+          [class.active]="currentPage === page"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      }
+
+      <button
+        type="button"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages">
+        Next
+      </button>
+
+    </div>
+
+    <span class="page-info">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+
+  </div>
+}

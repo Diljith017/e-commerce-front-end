@@ -1,0 +1,145 @@
+/* ========================================
+   NUTRIFORGE - CATEGORY NAVBAR
+   Black + Electric Blue + Acid Lime
+======================================== */
+
+:host {
+  display: block;
+  position: relative;
+  z-index: 999;
+}
+
+/* Main Navigation Bar */
+.category-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 20px;
+  background: #12141c;
+  border-bottom: 1px solid #292c37;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+/* Navigation Links */
+.category-navbar a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 19px 14px;
+  color: #a1a6b3;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  white-space: nowrap;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
+}
+
+/* Hover Effect */
+.category-navbar a:hover {
+  color: #ffffff;
+  background: rgba(36, 87, 255, 0.12);
+}
+
+/* Active Route */
+.category-navbar a.active {
+  color: #c7ff00;
+}
+
+/* Lime Indicator */
+.category-navbar a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 14px;
+  right: 14px;
+  height: 3px;
+  background: #c7ff00;
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 0 8px rgba(199, 255, 0, 0.25);
+}
+
+/* Keyboard Accessibility */
+.category-navbar a:focus-visible {
+  outline: 2px solid #2457ff;
+  outline-offset: -3px;
+  border-radius: 4px;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 900px) {
+  .category-navbar {
+    gap: 4px;
+    padding: 0 10px;
+  }
+
+  .category-navbar a {
+    padding: 17px 10px;
+    font-size: 11px;
+  }
+
+  .category-navbar a.active::after {
+    left: 10px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .category-navbar {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 2px;
+    padding: 0 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #2457ff #12141c;
+  }
+
+  .category-navbar a {
+    flex-shrink: 0;
+    padding: 16px 11px;
+    font-size: 10px;
+    letter-spacing: 0.4px;
+  }
+
+  .category-navbar a.active::after {
+    left: 11px;
+    right: 11px;
+    height: 2px;
+  }
+}
+
+
+/* Active navigation link */
+.category-navbar a.active {
+  color: #c7ff00 !important;
+  background: rgba(199, 255, 0, 0.05);
+}
+
+/* Lime indicator below active link */
+.category-navbar a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  background: #c7ff00;
+  border-radius: 3px 3px 0 0;
+}
+
+/* Hover effect */
+.category-navbar a:hover {
+  color: #ffffff;
+  background: rgba(36, 87, 255, 0.15);
+}

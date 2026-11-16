@@ -1,0 +1,648 @@
+<div class="profile-page">
+
+  <div class="profile-container">
+
+    @if (toastMessage) {
+  <div class="toast-message" [ngClass]="toastType">
+    <span class="toast-icon">
+      {{ toastType === 'success' ? '✓' : '!' }}
+    </span>
+
+    {{ toastMessage }}
+  </div>
+}
+
+    <!-- PAGE HEADING -->
+    <div class="page-heading">
+      <h1>MY PROFILE</h1>
+      <p>Manage your NutriForge account</p>
+    </div>
+
+    @if (user$ | async; as user) {
+
+      <div class="profile-card">
+
+        <!-- PROFILE HEADER -->
+        <div class="profile-header">
+
+          <div class="avatar-section">
+
+            <div class="profile-avatar">
+
+              @if (photoPreview || user.profilePhoto) {
+                <img
+                  [src]="photoPreview || user.profilePhoto"
+                  alt="Profile Photo">
+              } @else {
+                {{ user.name.charAt(0).toUpperCase() }}
+              }
+
+            </div>
+
+            <div class="avatar-actions">
+
+              <label for="profilePhoto" class="upload-photo-btn">
+                📷 Change Photo
+              </label>
+
+              <input
+                type="file"
+                id="profilePhoto"
+                accept="image/png,image/jpeg,image/jpg,image/webp"
+                hidden
+                (change)="onPhotoSelected($event)">
+
+              @if (photoPreview) {
+
+                <div class="photo-preview-actions">
+
+                  <button
+                    type="button"
+                    class="save-photo-btn"
+                    (click)="savePhoto()"
+                    [disabled]="photoSaving">
+                    {{ photoSaving ? 'SAVING...' : 'SAVE PHOTO' }}
+                  </button>
+
+                  <button
+                    type="button"
+                    class="remove-photo-btn"
+                    (click)="cancelPhoto()">
+                    CANCEL
+                  </button>
+
+                </div>
+
+              }
+
+              @if (photoError) {
+                <small class="error-message">
+                  {{ photoError }}
+                </small>
+              }
+
+              @if (photoSuccess) {
+                <small class="photo-success">
+                  {{ photoSuccess }}
+                </small>
+              }
+
+            </div>
+
+          </div>
+
+          <div class="profile-heading">
+            <h2>{{ user.name }}</h2>
+            <p>{{ user.email }}</p>
+            <span class="account-badge">ACTIVE MEMBER</span>
+          </div>
+
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="profile-details">
+
+          <div class="details-heading">
+            <h3>PERSONAL INFORMATION</h3>
+
+            @if (!isEditing) {
+              <button
+                type="button"
+                class="edit-btn"
+                (click)="editProfile()">
+                ✎ EDIT PROFILE
+              </button>
+            }
+          </div>
+
+          @if (!isEditing) {
+
+            <div class="detail-item">
+              <label>Full Name</label>
+              <p>{{ user.name }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Email Address</label>
+              <p>{{ user.email }}</p>
+            </div>
+
+            <div class="detail-item">
+              <label>Account Type</label>
+              <p>{{ user.role | titlecase }}</p>
+            </div>
+
+          } @else {
+
+            <!-- EDIT PROFILE FORM -->
+            <form
+              [formGroup]="profileForm"
+              (ngSubmit)="saveProfile()">
+
+              <div class="detail-item">
+                <label>Full Name</label>
+
+                <input
+                  type="text"
+                  formControlName="name"
+                  placeholder="Enter your full name">
+
+                @if (f.name.touched && f.name.invalid) {
+                  <small class="error-message">
+                    Name must contain at least 3 characters.
+                  </small>
+                }
+              </div>
+
+              <div class="detail-item">
+                <label>Email Address</label>
+
+                <input
+                  type="email"
+                  formControlName="email"
+                  placeholder="Enter your email">
+
+                @if (f.email.touched && f.email.invalid) {
+                  <small class="error-message">
+                    Please enter a valid email address.
+                  </small>
+                }
+              </div>
+
+              <div class="edit-actions">
+
+                <button
+                  type="submit"
+                  class="profile-btn primary-btn"
+                  [disabled]="(loading$ | async) || profileForm.invalid">
+                  {{ (loading$ | async) ? 'SAVING...' : 'SAVE CHANGES' }}
+                </button>
+
+                <button
+                  type="button"
+                  class="profile-btn cancel-btn"
+                  (click)="cancelEdit()">
+                  CANCEL
+                </button>
+
+                @if (successMessage) {
+                  <p class="success-message">
+                    {{ successMessage }}
+                  </p>
+                }
+
+              </div>
+
+              @if (duplicateEmailError) {
+                <p class="error-message">
+                  {{ duplicateEmailError }}
+                </p>
+              }
+
+              @if (error$ | async; as error) {
+                <p class="error-message">
+                  {{ error }}
+                </p>
+              }
+
+            </form>
+
+          }
+
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <!-- SAVED DELIVERY ADDRESSES -->
+        <div class="profile-details">
+
+          <div class="details-heading">
+            <h3>DELIVERY ADDRESSES</h3>
+
+            @if (!isEditingAddress) {
+              <button
+                type="button"
+                class="edit-btn"
+                (click)="addAddress()">
+                + ADD ADDRESS
+              </button>
+            }
+
+          </div>
+
+          @if (!isEditingAddress) {
+
+            <!-- MULTIPLE SAVED ADDRESSES -->
+            @if (user.addresses?.length) {
+
+              <div class="saved-address-list">
+
+                @for (address of user.addresses; track address.id) {
+
+                  <div class="address-card">
+
+                    <div class="address-card-header">
+
+                      <span class="address-card-title">
+                        {{ address.label }}
+                      </span>
+
+                      @if (address.isDefault) {
+                        <span class="default-address-badge">
+                          DEFAULT
+                        </span>
+                      }
+
+                    </div>
+
+                    <div class="address-grid">
+
+                      <div class="address-item">
+                        <label>Full Name</label>
+                        <p>{{ address.fullName }}</p>
+                      </div>
+
+                      <div class="address-item">
+                        <label>Email Address</label>
+                        <p>{{ address.email }}</p>
+                      </div>
+
+                      <div class="address-item">
+                        <label>Phone Number</label>
+                        <p>{{ address.phone }}</p>
+                      </div>
+
+                      <div class="address-item">
+                        <label>Pincode</label>
+                        <p>{{ address.pincode }}</p>
+                      </div>
+
+                      <div class="address-item full">
+                        <label>Street Address</label>
+                        <p>{{ address.address }}</p>
+                      </div>
+
+                      <div class="address-item">
+                        <label>City</label>
+                        <p>{{ address.city }}</p>
+                      </div>
+
+                      <div class="address-item">
+                        <label>State</label>
+                        <p>{{ address.state }}</p>
+                      </div>
+
+                    </div>
+
+                    <div class="saved-address-actions">
+
+                      @if (!address.isDefault) {
+
+                        <button
+                          type="button"
+                          class="profile-btn primary-btn"
+                          (click)="setDefaultAddress(address.id)"
+                          [disabled]="addressSaving">
+                          SET AS DEFAULT
+                        </button>
+
+                      }
+
+                      <button
+                        type="button"
+                        class="profile-btn cancel-btn"
+                        (click)="editAddress(address)"
+                        [disabled]="addressSaving">
+                        EDIT
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                }
+
+              </div>
+
+            } @else if (user.address) {
+
+              <!-- LEGACY SINGLE ADDRESS -->
+              <div class="address-card">
+
+                <div class="address-card-header">
+                  <span class="address-card-title">
+                    SAVED ADDRESS
+                  </span>
+
+                  <span class="default-address-badge">
+                    LEGACY ADDRESS
+                  </span>
+                </div>
+
+                <div class="address-grid">
+
+                  <div class="address-item">
+                    <label>Full Name</label>
+                    <p>{{ user.name }}</p>
+                  </div>
+
+                  <div class="address-item">
+                    <label>Email Address</label>
+                    <p>{{ user.email }}</p>
+                  </div>
+
+                  <div class="address-item">
+                    <label>Phone Number</label>
+                    <p>{{ user.phone }}</p>
+                  </div>
+
+                  <div class="address-item">
+                    <label>Pincode</label>
+                    <p>{{ user.pincode }}</p>
+                  </div>
+
+                  <div class="address-item full">
+                    <label>Street Address</label>
+                    <p>{{ user.address }}</p>
+                  </div>
+
+                  <div class="address-item">
+                    <label>City</label>
+                    <p>{{ user.city }}</p>
+                  </div>
+
+                  <div class="address-item">
+                    <label>State</label>
+                    <p>{{ user.state }}</p>
+                  </div>
+
+                </div>
+
+                <button
+                  type="button"
+                  class="profile-btn primary-btn"
+                  (click)="editAddress()">
+                  SAVE AS DELIVERY ADDRESS
+                </button>
+
+              </div>
+
+            } @else {
+
+              <!-- NO ADDRESS -->
+              <div class="empty-profile">
+                <p>No delivery address saved yet.</p>
+                <p>Add your address to make checkout faster.</p>
+              </div>
+
+            }
+
+          } @else {
+
+            <!-- ADD / EDIT ADDRESS FORM -->
+            <form
+              [formGroup]="addressForm"
+              (ngSubmit)="saveAddress()">
+
+              <!-- ADDRESS TYPE -->
+              <div class="detail-item">
+                <label>Address Type</label>
+
+                <select formControlName="label">
+                  <option value="HOME">HOME</option>
+                  <option value="WORK">WORK</option>
+                  <option value="OTHER">OTHER</option>
+                </select>
+              </div>
+
+              <!-- FULL NAME -->
+              <div class="detail-item">
+                <label>Full Name</label>
+
+                <input
+                  type="text"
+                  formControlName="name"
+                  placeholder="Enter your full name">
+
+                @if (af.name.touched && af.name.invalid) {
+                  <small class="error-message">
+                    Name must contain at least 3 characters.
+                  </small>
+                }
+              </div>
+
+              <!-- EMAIL -->
+              <div class="detail-item">
+                <label>Email Address</label>
+
+                <input
+                  type="email"
+                  formControlName="email"
+                  placeholder="Enter your email">
+
+                @if (af.email.touched && af.email.invalid) {
+                  <small class="error-message">
+                    Please enter a valid email address.
+                  </small>
+                }
+              </div>
+
+              <!-- PHONE -->
+              <div class="detail-item">
+                <label>Phone Number</label>
+
+                <input
+                  type="tel"
+                  formControlName="phone"
+                  maxlength="10"
+                  placeholder="Enter 10-digit phone number">
+
+                @if (af.phone.touched && af.phone.invalid) {
+                  <small class="error-message">
+                    Enter a valid 10-digit Indian mobile number.
+                  </small>
+                }
+              </div>
+
+              <!-- STREET ADDRESS -->
+              <div class="detail-item">
+                <label>Street Address</label>
+
+                <textarea
+                  formControlName="address"
+                  rows="3"
+                  maxlength="200"
+                  placeholder="House number, street, area">
+                </textarea>
+
+                @if (af.address.touched && af.address.invalid) {
+                  <small class="error-message">
+                    Address must contain at least 10 characters.
+                  </small>
+                }
+              </div>
+
+              <!-- CITY -->
+              <div class="detail-item">
+                <label>City</label>
+
+                <input
+                  type="text"
+                  formControlName="city"
+                  placeholder="Enter your city">
+
+                @if (af.city.touched && af.city.invalid) {
+                  <small class="error-message">
+                    Enter a valid city name.
+                  </small>
+                }
+              </div>
+
+              <!-- STATE -->
+              <div class="detail-item">
+                <label>State</label>
+
+                <input
+                  type="text"
+                  formControlName="state"
+                  placeholder="Enter your state">
+
+                @if (af.state.touched && af.state.invalid) {
+                  <small class="error-message">
+                    Enter a valid state name.
+                  </small>
+                }
+              </div>
+
+              <!-- PINCODE -->
+              <div class="detail-item">
+                <label>Pincode</label>
+
+                <input
+                  type="text"
+                  formControlName="pincode"
+                  maxlength="6"
+                  placeholder="Enter 6-digit pincode">
+
+                @if (af.pincode.touched && af.pincode.invalid) {
+                  <small class="error-message">
+                    Enter a valid 6-digit pincode.
+                  </small>
+                }
+              </div>
+
+              <!-- FORM ACTIONS -->
+              <div class="edit-actions">
+
+                <button
+                  type="submit"
+                  class="profile-btn primary-btn"
+                  [disabled]="addressSaving || addressForm.invalid">
+
+                  {{ addressSaving ? 'SAVING...' : 'SAVE ADDRESS' }}
+
+                </button>
+
+                <button
+                  type="button"
+                  class="profile-btn cancel-btn"
+                  (click)="cancelAddressEdit()"
+                  [disabled]="addressSaving">
+                  CANCEL
+                </button>
+
+              </div>
+
+            </form>
+
+          }
+
+          @if (addressSuccess) {
+            <p class="success-message">
+              {{ addressSuccess }}
+            </p>
+          }
+
+          @if (addressError) {
+            <p class="error-message">
+              {{ addressError }}
+            </p>
+          }
+
+        </div>
+
+        <div class="profile-divider"></div>
+
+        <!-- PROFILE ACTIONS -->
+        <div class="profile-actions">
+
+          <button
+            type="button"
+            class="logout-btn"
+            (click)="openLogoutModal()">
+            LOGOUT
+          </button>
+
+        </div>
+
+      </div>
+
+    } @else {
+
+      <!-- NO USER FOUND -->
+      <div class="empty-profile">
+        <h2>No User Found</h2>
+        <a routerLink="/login">Login to continue</a>
+      </div>
+
+    }
+
+  </div>
+
+</div>
+
+<!-- LOGOUT CONFIRMATION MODAL -->
+@if (showLogoutModal) {
+
+  <div
+    class="logout-overlay"
+    (click)="closeLogoutModal()">
+
+    <div
+      class="logout-modal"
+      (click)="$event.stopPropagation()">
+
+      <div class="logout-icon">↗</div>
+
+      <h2>LOG OUT?</h2>
+
+      <p>
+        Are you sure you want to leave NutriForge?
+        You'll need to log in again to access your account.
+      </p>
+
+      <div class="logout-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="closeLogoutModal()">
+          CANCEL
+        </button>
+
+        <button
+          type="button"
+          class="confirm-btn"
+          (click)="confirmLogout()">
+          YES, LOGOUT
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

@@ -1,0 +1,357 @@
+<div class="coupons-page">
+
+  <!-- Page Header -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Coupon Management</h1>
+      <p>Manage discount coupons for your customers.</p>
+    </div>
+
+    <button class="add-btn" (click)="openAddForm()">
+      + Add Coupon
+    </button>
+
+  </div>
+
+
+  <!-- Coupon Statistics -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <span>Total Coupons</span>
+      <h2>{{ coupons.length }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <span>Active Coupons</span>
+      <h2>{{ activeCouponsCount }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <span>Inactive Coupons</span>
+      <h2>{{ inactiveCouponsCount }}</h2>
+    </div>
+
+  </div>
+
+
+  <!-- Coupon Table -->
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Coupon</th>
+          <th>Discount</th>
+          <th>Minimum Order</th>
+          <th>Usage</th>
+          <th>Expiry</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (coupon of coupons; track coupon.id) {
+
+          <tr>
+
+            <td>
+              <strong>{{ coupon.code }}</strong>
+              <small>{{ coupon.description }}</small>
+            </td>
+
+            <td>
+              @if (coupon.discountType === 'percentage') {
+                {{ coupon.discountValue }}%
+              } @else {
+                ₹{{ coupon.discountValue }}
+              }
+            </td>
+
+            <td>
+              ₹{{ coupon.minOrderAmount }}
+            </td>
+
+            <td>
+              {{ coupon.usedCount }} / {{ coupon.usageLimit }}
+            </td>
+
+            <td>
+              {{ coupon.expiryDate | date:'dd MMM yyyy' }}
+            </td>
+
+            <td>
+
+              <span
+                class="status"
+                [class.active]="coupon.isActive"
+                [class.inactive]="!coupon.isActive">
+
+                {{ coupon.isActive ? 'Active' : 'Inactive' }}
+
+              </span>
+
+            </td>
+
+            <td class="actions">
+
+              <button
+                class="edit-btn"
+                (click)="editCoupon(coupon)">
+                Edit
+              </button>
+
+              <button
+                class="toggle-btn"
+                (click)="toggleStatus(coupon)">
+
+                {{ coupon.isActive ? 'Disable' : 'Enable' }}
+
+              </button>
+
+              <button
+                class="delete-btn"
+                (click)="deleteCoupon(coupon)">
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        } @empty {
+
+          <tr>
+            <td colspan="7" class="empty-state">
+              No coupons available. Create your first coupon!
+            </td>
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- Add / Edit Coupon Modal -->
+
+  @if (showForm) {
+
+    <div class="modal-overlay">
+
+      <div class="coupon-modal">
+
+        <div class="modal-header">
+
+          <h2>
+            {{ isEditMode ? 'Edit Coupon' : 'Create Coupon' }}
+          </h2>
+
+          <button
+            class="close-btn"
+            type="button"
+            (click)="closeForm()">
+            ×
+          </button>
+
+        </div>
+
+
+        <form (ngSubmit)="saveCoupon()">
+
+          <!-- Coupon Code -->
+
+          <div class="form-group">
+
+            <label>Coupon Code *</label>
+
+            <input
+              type="text"
+              name="code"
+              [(ngModel)]="couponForm.code"
+              placeholder="Example: FIT200"
+              required>
+
+          </div>
+
+
+          <!-- Description -->
+
+          <div class="form-group">
+
+            <label>Description *</label>
+
+            <input
+              type="text"
+              name="description"
+              [(ngModel)]="couponForm.description"
+              placeholder="Get discount on your order"
+              required>
+
+          </div>
+
+
+          <!-- Discount Type and Value -->
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Discount Type</label>
+
+              <select
+                name="discountType"
+                [(ngModel)]="couponForm.discountType">
+
+                <option value="percentage">
+                  Percentage (%)
+                </option>
+
+                <option value="fixed">
+                  Fixed Amount (₹)
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>Discount Value</label>
+
+              <input
+                type="number"
+                name="discountValue"
+                [(ngModel)]="couponForm.discountValue"
+                min="1"
+                required>
+
+            </div>
+
+          </div>
+
+
+          <!-- Minimum and Maximum Discount -->
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Minimum Order Amount (₹)</label>
+
+              <input
+                type="number"
+                name="minOrderAmount"
+                [(ngModel)]="couponForm.minOrderAmount"
+                min="0">
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>Maximum Discount (₹)</label>
+
+              <input
+                type="number"
+                name="maxDiscount"
+                [(ngModel)]="couponForm.maxDiscount"
+                min="0"
+                [disabled]="couponForm.discountType === 'fixed'">
+
+            </div>
+
+          </div>
+
+
+          <!-- Expiry and Usage Limit -->
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label>Expiry Date</label>
+
+              <input
+                type="date"
+                name="expiryDate"
+                [(ngModel)]="couponForm.expiryDate"
+                required>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>Usage Limit</label>
+
+              <input
+                type="number"
+                name="usageLimit"
+                [(ngModel)]="couponForm.usageLimit"
+                min="1"
+                required>
+
+            </div>
+
+          </div>
+
+
+          <!-- Active Status -->
+
+          <div class="form-group checkbox-group">
+
+            <input
+              type="checkbox"
+              id="active"
+              name="isActive"
+              [(ngModel)]="couponForm.isActive">
+
+            <label for="active">
+              Activate this coupon
+            </label>
+
+          </div>
+
+
+          <!-- Form Buttons -->
+
+          <div class="modal-actions">
+
+            <button
+              type="button"
+              class="cancel-btn"
+              (click)="closeForm()">
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="save-btn">
+
+              {{ isEditMode ? 'Update Coupon' : 'Create Coupon' }}
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

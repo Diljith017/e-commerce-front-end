@@ -1,0 +1,254 @@
+/* =========================================
+   ADMIN HEADER
+========================================= */
+
+.header {
+  height: 76px;
+  min-height: 76px;
+  background: #191e2b;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #292f3e;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  flex-shrink: 0;
+}
+
+/* HEADER LEFT */
+
+.header-left h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.header-left p {
+  margin: 4px 0 0;
+  color: #999eac;
+  font-size: 12px;
+}
+
+/* ADMIN INFORMATION */
+
+.admin-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  background: rgba(182, 242, 58, 0.15);
+  color: #b6f23a;
+  border: 1px solid rgba(182, 242, 58, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.admin-info h4 {
+  margin: 0;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.admin-info small {
+  color: #999eac;
+  font-size: 11px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* =========================================
+   LOGOUT BUTTON
+========================================= */
+
+.logout-btn {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   MODAL OVERLAY
+========================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* =========================================
+   LOGOUT MODAL
+========================================= */
+
+.logout-modal {
+  width: 100%;
+  max-width: 400px;
+  background: #191e2b;
+  border: 1px solid #343b4d;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  animation: modalFadeIn 0.2s ease;
+}
+
+.logout-icon {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: rgba(255, 100, 100, 0.12);
+  color: #ff8585;
+  border: 1px solid rgba(255, 100, 100, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.logout-modal h3 {
+  color: #ffffff;
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+.logout-modal p {
+  color: #999eac;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* =========================================
+   MODAL BUTTONS
+========================================= */
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.modal-actions button {
+  padding: 11px 20px;
+  border-radius: 7px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cancel-btn {
+  background: #343b4c;
+  color: #ffffff;
+}
+
+.cancel-btn:hover {
+  background: #465168;
+}
+
+.confirm-btn {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.confirm-btn:hover {
+  background: #b91c1c;
+}
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0 14px;
+    height: 68px;
+    min-height: 68px;
+  }
+
+  .header-left h2 {
+    font-size: 16px;
+  }
+
+  .header-left p {
+    font-size: 10px;
+  }
+
+  .admin-info {
+    gap: 6px;
+  }
+
+  .admin-info h4 {
+    font-size: 11px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .header-right {
+    gap: 10px;
+  }
+
+  .logout-btn {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .logout-modal {
+    padding: 22px;
+  }
+}

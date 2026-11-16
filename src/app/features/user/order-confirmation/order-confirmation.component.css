@@ -1,0 +1,92 @@
+.confirmation-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.confirmation-card {
+  padding: 30px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.success-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #e1f5e7;
+  color: #16803c;
+  font-size: 35px;
+}
+
+.confirmation-card h1,
+.confirmation-card > p {
+  text-align: center;
+}
+
+.order-info {
+  margin: 25px 0;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+
+.ordered-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 20px;
+  border-radius: 7px;
+  background: #d62828;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.button:hover {
+  background: #b71c1c;
+}
+
+@media (max-width: 500px) {
+  .confirmation-card {
+    padding: 20px;
+  }
+
+  .ordered-item {
+    font-size: 14px;
+  }
+}
+
+
+.confirmation-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.confirmation-actions .button {
+  flex: 1;
+  text-align: center;
+}
+
+.view-order-btn {
+  background: #2457ff;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .confirmation-actions {
+    flex-direction: column;
+  }
+}

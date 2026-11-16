@@ -1,0 +1,337 @@
+<div class="order-details-page">
+
+  <a routerLink="/my-orders" class="back-link">
+    ← Back to My Orders
+  </a>
+
+  @if (loading) {
+
+    <p class="message">Loading order details...</p>
+
+  } @else if (errorMessage) {
+
+    <div class="error-box">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+  } @else if (order) {
+
+    <h1>Order Details</h1>
+
+    <!-- Success Message -->
+    @if (successMessage) {
+      <div class="success-message">
+        ✓ {{ successMessage }}
+      </div>
+    }
+
+    <section class="details-card">
+
+      <!-- Order Header -->
+      <div class="order-heading">
+
+        <div>
+          <h2>Order #{{ order.id }}</h2>
+          <p>{{ order.createdAt | date:'medium' }}</p>
+        </div>
+
+        <span class="status"
+          [class.cancelled-status]="order.status === 'Cancelled'">
+          {{ order.status }}
+        </span>
+
+      </div>
+
+      <!-- Order Tracking -->
+      @if (order.status !== 'Cancelled') {
+
+        <section class="tracking-section">
+
+          <h3>Order Tracking</h3>
+
+          <div class="tracking-progress">
+
+            @for (step of trackingSteps; track step; let i = $index) {
+
+              <div
+                    class="tracking-step"
+                          [class.completed]="i < currentStep || (i === currentStep && currentStep === 3)"
+                          [class.active]="i === currentStep && currentStep !== 3">
+                          
+                <div class="step-circle">
+
+                @if (i < currentStep || (i === currentStep && currentStep === 3)) {
+                           ✓
+                       } @else {
+                           {{ i + 1 }}
+                            }
+
+                </div>
+
+                <span class="step-label">{{ step }}</span>
+
+              </div>
+
+            }
+
+          </div>
+
+        </section>
+
+      } @else {
+
+        <div class="cancelled-banner">
+          <h3>Order Cancelled</h3>
+
+          <p>
+            This order has been successfully cancelled.
+          </p>
+        </div>
+
+      }
+
+      <hr />
+
+      <!-- Customer Information -->
+      <h3>Customer Information</h3>
+
+      <div class="customer-info">
+
+        <p>
+          <strong>Name:</strong>
+          {{ order.customer.fullName }}
+        </p>
+
+        <p>
+          <strong>Email:</strong>
+          {{ order.customer.email }}
+        </p>
+
+        <p>
+          <strong>Phone:</strong>
+          {{ order.customer.phone }}
+        </p>
+
+        <p>
+          <strong>Address:</strong>
+          {{ order.customer.address }},
+          {{ order.customer.city }},
+          {{ order.customer.state }} -
+          {{ order.customer.pincode }}
+        </p>
+
+      </div>
+
+      <hr />
+
+      <!-- Products Ordered -->
+      <h3>Products Ordered</h3>
+
+      @for (item of order.items; track item.product.id) {
+
+        <div class="product-row">
+
+          <img
+            [src]="item.product.image"
+            [alt]="item.product.name"
+          />
+
+          <div class="product-info">
+
+            <h4>{{ item.product.name }}</h4>
+
+            <p>Brand: {{ item.product.brand }}</p>
+
+            <p>Quantity: {{ item.quantity }}</p>
+
+            <p>
+              Unit price:
+              {{ item.product.price | currency:'INR':'symbol':'1.2-2' }}
+            </p>
+
+          </div>
+
+          <strong>
+            {{
+              item.product.price * item.quantity
+                | currency:'INR':'symbol':'1.2-2'
+            }}
+          </strong>
+
+        </div>
+
+      }
+
+      <hr />
+
+      <!-- Payment Information -->
+      <div class="payment-info">
+
+        <p>
+          <strong>Payment Method:</strong>
+          {{ order.paymentMethod | uppercase }}
+        </p>
+
+        <p>
+          <strong>Order Status:</strong>
+          {{ order.status }}
+        </p>
+
+        <h2>
+          Total:
+          {{ order.total | currency:'INR':'symbol':'1.2-2' }}
+        </h2>
+
+      </div>
+
+      <!-- Cancellation Information -->
+      @if (order.status === 'Cancelled') {
+
+        <div class="cancellation-info">
+
+          <h3>Cancellation Details</h3>
+
+          <p>
+            <strong>Reason:</strong>
+            {{ order.cancellationReason || 'Not provided' }}
+          </p>
+
+          @if (order.cancellationComment) {
+            <p>
+              <strong>Comments:</strong>
+              {{ order.cancellationComment }}
+            </p>
+          }
+
+          @if (order.cancelledAt) {
+            <p>
+              <strong>Cancelled On:</strong>
+              {{ order.cancelledAt | date:'medium' }}
+            </p>
+          }
+
+        </div>
+
+      }
+
+      <!-- Cancel Order Button -->
+      @if (canCancelOrder()) {
+
+        <div class="cancel-action">
+
+          <button
+            type="button"
+            class="cancel-order-button"
+            (click)="openCancelDialog()">
+
+            Cancel Order
+
+          </button>
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+</div>
+
+<!-- Cancellation Modal -->
+@if (showCancelDialog) {
+
+  <div class="cancel-modal-overlay">
+
+    <div class="cancel-modal">
+
+      <div class="modal-header">
+
+        <h2>Cancel Order</h2>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeCancelDialog()"
+          [disabled]="cancelling">
+          ×
+        </button>
+
+      </div>
+
+      <p class="modal-description">
+        Are you sure you want to cancel order
+        <strong>#{{ order?.id }}</strong>?
+      </p>
+
+      <form (ngSubmit)="confirmCancellation()">
+
+        <label for="cancelReason">
+          Why do you want to cancel this order?
+        </label>
+
+        <select
+          id="cancelReason"
+          name="cancellationReason"
+          [(ngModel)]="cancellationReason">
+
+          <option value="" disabled>
+            Select a reason
+          </option>
+
+          @for (reason of cancellationReasons; track reason) {
+
+            <option [value]="reason">
+              {{ reason }}
+            </option>
+
+          }
+
+        </select>
+
+        <label for="cancelComment">
+          Additional Comments (Optional)
+        </label>
+
+        <textarea
+          id="cancelComment"
+          name="cancellationComment"
+          [(ngModel)]="cancellationComment"
+          placeholder="Tell us more..."
+          rows="3">
+        </textarea>
+
+        @if (cancellationError) {
+          <p class="cancel-error">
+            {{ cancellationError }}
+          </p>
+        }
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="go-back-button"
+            (click)="closeCancelDialog()"
+            [disabled]="cancelling">
+            Go Back
+          </button>
+
+          <button
+            type="submit"
+            class="confirm-cancel-button"
+            [disabled]="cancelling">
+
+            {{ cancelling ? 'Cancelling...' : 'Confirm Cancellation' }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+}

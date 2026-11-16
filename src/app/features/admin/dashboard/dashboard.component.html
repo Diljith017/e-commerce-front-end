@@ -1,0 +1,310 @@
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="page-heading">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome back! Here's your store overview.</p>
+    </div>
+
+    <span class="dashboard-badge">● Store Overview</span>
+  </div>
+
+  <!-- MAIN STATISTICS -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <div class="stat-icon revenue-icon">₹</div>
+      <div>
+        <p>Total Revenue</p>
+        <h2>₹{{ totalRevenue | number:'1.0-0' }}</h2>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon orders-icon">🛒</div>
+      <div>
+        <p>Total Orders</p>
+        <h2>{{ totalOrders }}</h2>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon products-icon">📦</div>
+      <div>
+        <p>Total Products</p>
+        <h2>{{ totalProducts }}</h2>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon users-icon">👥</div>
+      <div>
+        <p>Total Customers</p>
+        <h2>{{ totalUsers }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECONDARY STATISTICS -->
+  <div class="secondary-stats">
+
+    <div class="mini-stat">
+      <p>Average Order Value</p>
+      <h3>₹{{ averageOrderValue | number:'1.0-0' }}</h3>
+    </div>
+
+    <div class="mini-stat">
+      <p>Revenue Growth</p>
+
+      @if (selectedDateRange === 'all') {
+        <h3>N/A</h3>
+      } @else {
+        <h3 [class.positive-growth]="isRevenueGrowthPositive"
+            [class.negative-growth]="!isRevenueGrowthPositive">
+          {{ isRevenueGrowthPositive ? '+' : '' }}
+          {{ revenueGrowth | number:'1.1-1' }}%
+        </h3>
+      }
+    </div>
+
+    <div class="mini-stat">
+      <p>Total Units Sold</p>
+      <h3>{{ totalUnitsSold }}</h3>
+    </div>
+
+    <div class="mini-stat">
+      <p>Best-Selling Month</p>
+      <h3>{{ bestSellingMonth }}</h3>
+    </div>
+
+  </div>
+
+  <!-- SALES ANALYTICS + ORDER STATUS -->
+  <div class="analytics-grid">
+
+    <section class="dashboard-section">
+
+      <div class="section-heading">
+        <div>
+          <h2>Sales Analytics</h2>
+          <p>Sales performance over time</p>
+        </div>
+
+        <select
+          class="date-filter"
+          [(ngModel)]="selectedDateRange"
+          (change)="onDateRangeChange()">
+
+          @for (option of dateRangeOptions; track option.value) {
+            <option [value]="option.value">
+              {{ option.label }}
+            </option>
+          }
+
+        </select>
+      </div>
+
+      <div class="chart-container">
+        <canvas #salesChart></canvas>
+      </div>
+
+    </section>
+
+    <section class="dashboard-section">
+
+      <div class="section-heading">
+        <div>
+          <h2>Order Status</h2>
+          <p>Order distribution</p>
+        </div>
+      </div>
+
+      <div class="order-chart-container">
+        <canvas #orderStatusChart></canvas>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- REVENUE VS ORDERS -->
+  <section class="dashboard-section">
+
+    <div class="section-heading">
+      <div>
+        <h2>Revenue vs Orders</h2>
+        <p>Compare revenue and order volume</p>
+      </div>
+    </div>
+
+    <div class="revenue-orders-chart-container">
+      <canvas #revenueOrdersChart></canvas>
+    </div>
+
+  </section>
+
+  <!-- TOP SELLING + PERFORMANCE INSIGHTS -->
+  <div class="analytics-grid">
+
+    <section class="dashboard-section">
+
+      <div class="section-heading">
+        <div>
+          <h2>Top-Selling Products</h2>
+          <p>Top 5 products by units sold</p>
+        </div>
+
+        <span class="chart-label">Best Sellers</span>
+      </div>
+
+      @if (hasTopSellingProducts) {
+        <div class="top-selling-chart-container">
+          <canvas #topSellingChart></canvas>
+        </div>
+      } @else {
+        <p class="empty-message">No product sales available yet.</p>
+      }
+
+    </section>
+
+    <section class="dashboard-section">
+
+      <div class="section-heading">
+        <div>
+          <h2>Sales Insights</h2>
+          <p>Store performance highlights</p>
+        </div>
+      </div>
+
+      <div class="insights-list">
+
+        <div class="insight-item">
+          <span>🏆</span>
+          <div>
+            <p>Most Popular Product</p>
+            <h3>{{ mostPopularProduct }}</h3>
+          </div>
+        </div>
+
+        <div class="insight-item">
+          <span>💰</span>
+          <div>
+            <p>Highest Revenue Month</p>
+            <h3>{{ highestRevenuePeriod }}</h3>
+            <small>₹{{ highestRevenueAmount | number:'1.0-0' }}</small>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- RECENT ORDERS -->
+  <section class="dashboard-section">
+
+    <div class="section-heading">
+      <div>
+        <h2>Recent Orders</h2>
+        <p>Latest customer orders</p>
+      </div>
+
+      <a routerLink="/admin/orders">View All →</a>
+    </div>
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (order of recentOrders; track order.id) {
+
+            <tr>
+              <td>#{{ order.orderNumber || order.id }}</td>
+              <td>{{ order.customer?.fullName || 'N/A' }}</td>
+              <td>₹{{ order.total | number:'1.0-0' }}</td>
+
+              <td>
+                <span class="status" [ngClass]="order.status">
+                  {{ order.status }}
+                </span>
+              </td>
+            </tr>
+
+          }
+
+          @empty {
+            <tr>
+              <td colspan="4" class="empty-message">
+                No orders available.
+              </td>
+            </tr>
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+  <!-- LOW STOCK -->
+  <section class="dashboard-section">
+
+    <div class="section-heading">
+      <div>
+        <h2>Low Stock Alerts</h2>
+        <p>Products that need restocking</p>
+      </div>
+
+      <a routerLink="/admin/products">Manage Products →</a>
+    </div>
+
+    @if (lowStockProducts.length > 0) {
+
+      <div class="low-stock-list">
+
+        @for (product of lowStockProducts; track product.id) {
+
+          <div class="low-stock-item">
+
+            <div>
+              <h4>{{ product.name }}</h4>
+              <small>{{ product.brand }}</small>
+            </div>
+
+            <span class="stock-warning">
+              {{ product.stock }} left
+            </span>
+
+          </div>
+
+        }
+
+      </div>
+
+    } @else {
+
+      <p class="empty-message">
+        All products have sufficient stock.
+      </p>
+
+    }
+
+  </section>
+
+</div>

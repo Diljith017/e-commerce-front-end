@@ -1,0 +1,269 @@
+<div class="users-page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+
+    <div>
+      <h2>User Management</h2>
+      <p>Manage registered NutriForge customers</p>
+    </div>
+
+    <div class="total-users">
+      Total Users:
+      <strong>{{ users.length }}</strong>
+    </div>
+
+  </div>
+
+  <!-- USER STATISTICS -->
+  <div class="stats-container">
+
+  <div class="stat-card">
+    <span>Total Users</span>
+    <h3>{{ users.length }}</h3>
+  </div>
+
+  <div class="stat-card active-card">
+    <span>Active Users</span>
+    <h3>{{ activeUserCount }}</h3>
+  </div>
+
+  <div class="stat-card blocked-card">
+    <span>Blocked Users</span>
+    <h3>{{ blockedUserCount }}</h3>
+  </div>
+
+</div>
+
+  <!-- SEARCH -->
+<!-- SEARCH AND FILTERS -->
+<div class="filter-toolbar">
+
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="currentPage = 1"
+      placeholder="Search by name or email..."
+    />
+  </div>
+
+  <div class="filter-group">
+
+    <select
+      [(ngModel)]="statusFilter"
+      (ngModelChange)="currentPage = 1"
+    >
+      <option value="all">All Users</option>
+      <option value="active">Active Users</option>
+      <option value="blocked">Blocked Users</option>
+    </select>
+
+    <button
+      class="clear-filter-btn"
+      (click)="clearFilters()"
+    >
+      Clear Filters
+    </button>
+
+  </div>
+
+</div>
+
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="message">
+      Loading users...
+    </div>
+  }
+
+  <!-- ERROR -->
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <!-- USERS TABLE -->
+  @if (!loading && !errorMessage) {
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Phone</th>
+            <th>Orders</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (user of paginatedUsers; track user.id) {
+
+            <tr>
+
+              <td class="user-info">
+                <strong>{{ user.name }}</strong>
+                <small>{{ user.email }}</small>
+              </td>
+
+              <td>
+                {{ user.phone || 'Not provided' }}
+              </td>
+
+              <td>
+                {{ getOrderCount(user.id) }}
+              </td>
+
+              <td>
+                <span
+                  class="status-badge"
+                  [class.active]="(user.status || 'active') === 'active'"
+                  [class.blocked]="user.status === 'blocked'"
+                >
+                  {{ user.status || 'active' }}
+                </span>
+              </td>
+
+              <td class="action-buttons">
+
+  <button
+    class="view-btn"
+    [routerLink]="['/admin/users', user.id]"
+  >
+    View Details
+  </button>
+
+  @if (user.status !== 'blocked') {
+
+    <button
+      class="block-btn"
+      (click)="blockUser(user)"
+    >
+      Block
+    </button>
+
+  } @else {
+
+    <button
+      class="unblock-btn"
+      (click)="unblockUser(user)"
+    >
+      Unblock
+    </button>
+
+  }
+
+</td>
+
+            </tr>
+
+          } @empty {
+
+            <tr>
+              <td colspan="5" class="empty-message">
+                No users found.
+              </td>
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+
+      <app-pagination
+  [currentPage]="currentPage"
+  [pageSize]="pageSize"
+  [totalItems]="filteredUsers.length"
+  (pageChange)="onPageChange($event)"
+  (pageSizeChange)="onPageSizeChange($event)"
+></app-pagination>
+
+    </div>
+
+  }
+
+
+  <!-- BLOCK / UNBLOCK CONFIRMATION MODAL -->
+
+@if (showStatusConfirm && selectedUser) {
+
+  <div
+    class="modal-overlay"
+    (click)="cancelStatusChange()"
+  >
+
+    <div
+      class="confirmation-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- ICON -->
+      <div
+        class="status-confirm-icon"
+        [class.block-icon]="selectedAction === 'block'"
+        [class.unblock-icon]="selectedAction === 'unblock'"
+      >
+        !
+      </div>
+
+      <!-- TITLE -->
+      <h3>
+        {{ selectedAction === 'block' ? 'Block User?' : 'Unblock User?' }}
+      </h3>
+
+      <!-- MESSAGE -->
+      <p>
+        @if (selectedAction === 'block') {
+          Are you sure you want to block
+          <strong>{{ selectedUser.name }}</strong>?
+          They will no longer be able to access their account.
+        } @else {
+          Are you sure you want to unblock
+          <strong>{{ selectedUser.name }}</strong>?
+          They will regain access to their account.
+        }
+      </p>
+
+      <!-- ACTION BUTTONS -->
+      <div class="modal-actions">
+
+        <button
+          class="cancel-btn"
+          (click)="cancelStatusChange()"
+          [disabled]="updatingStatus"
+        >
+          Cancel
+        </button>
+
+        <button
+          [class.confirm-block-btn]="selectedAction === 'block'"
+          [class.confirm-unblock-btn]="selectedAction === 'unblock'"
+          (click)="confirmStatusChange()"
+          [disabled]="updatingStatus"
+        >
+          {{
+            updatingStatus
+              ? 'Please wait...'
+              : selectedAction === 'block'
+                ? 'Yes, Block'
+                : 'Yes, Unblock'
+          }}
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+</div>

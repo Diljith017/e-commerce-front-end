@@ -1,0 +1,59 @@
+<nav class="category-navbar">
+
+  <!-- Home -->
+  <a
+    routerLink="/"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }">
+    HOME
+  </a>
+
+  <!-- All Products -->
+  <a
+    routerLink="/products"
+    [queryParams]="{}"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }">
+    ALL PRODUCTS
+  </a>
+
+  <!-- Whey Protein -->
+  <a
+    routerLink="/products"
+    [queryParams]="{ category: 'Whey Protein' }"
+    routerLinkActive="active">
+    WHEY PROTEIN
+  </a>
+
+  <!-- Creatine -->
+  <a
+    routerLink="/products"
+    [queryParams]="{ category: 'Creatine' }"
+    routerLinkActive="active">
+    CREATINE
+  </a>
+
+  <!-- Pre-Workout -->
+  <a
+    routerLink="/products"
+    [queryParams]="{ category: 'Pre-Workout' }"
+    routerLinkActive="active">
+    PRE-WORKOUT
+  </a>
+
+  <!-- Offers -->
+  <a routerLink="/offers" routerLinkActive="active">
+    OFFERS
+  </a>
+
+  <!-- Logged-in User Links -->
+  @if (isAuthenticated$ | async) {
+
+    <a routerLink="/my-orders" routerLinkActive="active">
+      MY ORDERS
+    </a>
+
+   
+  } 
+
+</nav>
