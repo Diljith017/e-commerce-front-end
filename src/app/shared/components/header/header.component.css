@@ -580,3 +580,77 @@
     font-size: 16px !important;
   }
 }
+
+
+/* ========================================
+   SEARCH BAR ALIGNMENT FIX
+======================================== */
+
+.main-header {
+  min-width: 0;
+}
+
+.search-container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+  flex: 1 1 550px;
+  width: 100%;
+  min-width: 250px;
+  max-width: 550px;
+  height: 44px;
+  overflow: hidden;
+}
+
+.search-container input {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 0;
+  height: 100%;
+  font-size: 14px;
+}
+
+.search-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: auto;
+  height: 100%;
+  padding: 0 20px;
+  white-space: nowrap;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .main-header {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .search-container {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+  .search-container {
+    height: 42px;
+  }
+
+  .search-container input {
+    font-size: 16px !important;
+  }
+
+  .search-container button {
+    padding: 0 14px;
+    font-size: 12px;
+  }
+}
