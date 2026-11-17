@@ -15,7 +15,7 @@ export class AuthService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/users';
+ private apiUrl = 'https://nutriforge-api-du2u.onrender.com/users';
 
   private userStorageKey = 'nutriforge_user_id';
   private adminStorageKey = 'nutriforge_admin_id';

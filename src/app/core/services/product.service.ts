@@ -10,7 +10,7 @@ export class ProductService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/products';
+  private apiUrl = 'https://nutriforge-api-du2u.onrender.com/products';
 
   // GET ALL PRODUCTS
   getProducts(): Observable<Product[]> {
