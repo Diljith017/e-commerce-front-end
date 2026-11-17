@@ -768,3 +768,188 @@
     min-width: unset;
   }
 }
+
+
+/* =========================================
+   CHECKOUT - MOBILE IMPROVEMENTS
+========================================= */
+
+@media (max-width: 480px) {
+  .checkout-container {
+    width: 100%;
+    padding: 25px 12px 40px;
+  }
+
+  .checkout-container h1 {
+    font-size: 27px;
+    margin-bottom: 25px;
+  }
+
+  .checkout-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .checkout-form {
+    width: 100%;
+    padding: 18px 13px;
+  }
+
+  .checkout-form h2 {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .checkout-form label {
+    font-size: 12px;
+  }
+
+  .checkout-form input:not([type="radio"]),
+  .checkout-form textarea,
+  .delivery-address-section select {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+    padding: 13px 11px;
+  }
+
+  /* Saved Address */
+
+  .saved-address-card {
+    width: 100%;
+    padding: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .saved-address-card p {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .saved-address-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .address-choice {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .address-choice > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Address Buttons */
+
+  .address-form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .address-form-actions .button {
+    width: 100%;
+  }
+
+  /* Payment Options */
+
+  .checkout-form .payment-option {
+    width: 100%;
+    padding: 13px 10px;
+    gap: 9px;
+    font-size: 13px;
+  }
+
+  .online-payment-section {
+    padding: 13px;
+  }
+
+  .online-payment-section h3 {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .online-payment-option {
+    padding: 13px 10px;
+  }
+
+  .online-payment-option small {
+    margin-left: 25px;
+    font-size: 11px;
+  }
+
+  .payment-details {
+    padding: 13px;
+  }
+
+  /* Order Summary */
+
+  .order-summary {
+    width: 100%;
+    padding: 18px 14px;
+    position: static;
+  }
+
+  .order-summary h2 {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .summary-item {
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .summary-item strong {
+    font-size: 13px;
+  }
+
+  .summary-total {
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .summary-total strong:last-child {
+    font-size: 19px;
+  }
+
+  /* Toast */
+
+  .toast-message {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    min-width: 0;
+    padding: 13px;
+    font-size: 12px;
+  }
+
+  .checkout-form .button {
+    min-height: 46px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .checkout-container {
+    padding: 20px 10px 35px;
+  }
+
+  .checkout-form {
+    padding: 15px 11px;
+  }
+
+  .order-summary {
+    padding: 15px 11px;
+  }
+
+  .summary-total strong:last-child {
+    font-size: 17px;
+  }
+
+  .online-payment-section {
+    padding: 10px;
+  }
+}

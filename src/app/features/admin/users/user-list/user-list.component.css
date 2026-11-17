@@ -534,3 +534,220 @@ tbody tr:hover {
     width: 100%;
   }
 }
+
+
+/* =========================================
+   USER MANAGEMENT - RESPONSIVE
+========================================= */
+
+.users-page,
+.stats-container,
+.filter-toolbar,
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.stat-card,
+.search-container,
+.filter-group {
+  min-width: 0;
+}
+
+input,
+select,
+button {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+  .users-page {
+    padding: 20px;
+  }
+
+  .stats-container {
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 18px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .users-page {
+    padding: 14px 12px;
+  }
+
+  .page-header {
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .page-header h2 {
+    font-size: 22px;
+  }
+
+  .page-header p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .total-users {
+    width: 100%;
+    padding: 11px 13px;
+    font-size: 12px;
+  }
+
+  /* Statistics */
+  .stats-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .stat-card {
+    padding: 15px 12px;
+  }
+
+  .stat-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .stat-card span {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .stat-card h3 {
+    margin-top: 8px;
+    font-size: 22px;
+  }
+
+  /* Search and filters */
+  .filter-toolbar {
+    padding: 13px;
+    gap: 12px;
+  }
+
+  .search-container {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .search-container input {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .filter-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 9px;
+  }
+
+  .filter-group select,
+  .clear-filter-btn {
+    width: 100%;
+    min-height: 43px;
+  }
+
+  .filter-group select {
+    font-size: 13px;
+  }
+
+  /* User table */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 850px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  .user-info strong {
+    font-size: 13px;
+  }
+
+  .user-info small {
+    font-size: 11px;
+  }
+
+  .action-buttons button {
+    min-height: 36px;
+    padding: 8px 10px;
+  }
+
+  /* Confirmation modal */
+  .modal-overlay {
+    padding: 14px;
+  }
+
+  .confirmation-modal {
+    max-width: 100%;
+    padding: 22px 16px;
+  }
+
+  .confirmation-modal h3 {
+    font-size: 18px;
+  }
+
+  .confirmation-modal p {
+    font-size: 13px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    gap: 9px;
+  }
+
+  .modal-actions button {
+    width: 100%;
+    min-height: 43px;
+  }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 380px) {
+  .users-page {
+    padding: 12px 9px;
+  }
+
+  .page-header h2 {
+    font-size: 20px;
+  }
+
+  .stats-container {
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 13px 10px;
+  }
+
+  .stat-card h3 {
+    font-size: 19px;
+  }
+
+  .filter-toolbar {
+    padding: 10px;
+  }
+
+  .confirmation-modal {
+    padding: 19px 13px;
+  }
+}

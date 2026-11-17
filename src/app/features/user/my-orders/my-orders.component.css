@@ -703,3 +703,217 @@
     flex-direction: column;
   }
 }
+
+
+/* =========================================
+   MY ORDERS - MOBILE IMPROVEMENTS
+========================================= */
+
+@media (max-width: 480px) {
+  .my-orders-page {
+    width: calc(100% - 24px);
+    padding: 25px 0 40px;
+  }
+
+  .page-header {
+    margin-bottom: 23px;
+  }
+
+  .page-header h1 {
+    font-size: 27px;
+  }
+
+  .page-header p {
+    font-size: 12px;
+  }
+
+  /* Filters */
+
+  .orders-controls {
+    width: 100%;
+    padding: 13px;
+    gap: 15px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-group select {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  /* Order Card */
+
+  .orders-list {
+    gap: 17px;
+  }
+
+  .order-card {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .order-header {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .order-header h2 {
+    font-size: 15px;
+  }
+
+  .order-date {
+    font-size: 11px;
+  }
+
+  .status {
+    padding: 7px 11px;
+    font-size: 10px;
+  }
+
+  /* Products */
+
+  .order-items {
+    padding: 5px 12px;
+  }
+
+  .order-item {
+    display: grid;
+    grid-template-columns: 55px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    padding: 14px 0;
+  }
+
+  .order-item img {
+    width: 55px;
+    height: 55px;
+    grid-row: span 2;
+  }
+
+  .item-info {
+    min-width: 0;
+  }
+
+  .item-info h3 {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .item-info p {
+    font-size: 11px;
+    overflow-wrap: anywhere;
+  }
+
+  .order-item > strong {
+    grid-column: 2;
+    justify-self: start;
+    font-size: 12px;
+  }
+
+  /* Footer */
+
+  .order-footer {
+    padding: 14px;
+    gap: 8px;
+  }
+
+  .order-footer p {
+    font-size: 11px;
+    overflow-wrap: anywhere;
+  }
+
+  .order-footer .order-total {
+    font-size: 16px;
+  }
+
+  /* Action Buttons */
+
+  .order-actions {
+    flex-direction: column;
+    padding: 12px;
+    gap: 9px;
+  }
+
+  .order-actions a,
+  .order-actions button {
+    width: 100%;
+    min-height: 43px;
+  }
+
+  /* Cancellation */
+
+  .cancellation-info {
+    margin: 0 12px 15px;
+    padding: 13px;
+    overflow-wrap: anywhere;
+  }
+
+  .cancellation-info p {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  /* Modal */
+
+  .cancel-modal-overlay {
+    padding: 12px;
+  }
+
+  .cancel-modal {
+    width: 100%;
+    max-width: 380px;
+    padding: 18px 14px;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+  }
+
+  .cancel-modal select,
+  .cancel-modal textarea {
+    font-size: 16px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .go-back-button,
+  .confirm-cancel-button {
+    width: 100%;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .my-orders-page {
+    width: calc(100% - 20px);
+  }
+
+  .order-header h2 {
+    font-size: 14px;
+  }
+
+  .order-items {
+    padding-inline: 9px;
+  }
+
+  .order-item {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .order-item img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .order-footer {
+    padding: 12px;
+  }
+}

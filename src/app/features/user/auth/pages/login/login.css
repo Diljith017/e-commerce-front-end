@@ -1,6 +1,14 @@
-/* Main Page */
+/* ========================================
+   LOGIN PAGE
+======================================== */
+
+:host {
+  display: block;
+  width: 100%;
+}
 
 .auth-page {
+  width: 100%;
   min-height: 85vh;
   display: flex;
   justify-content: center;
@@ -8,14 +16,16 @@
   padding: 50px 20px;
   background: #08090d;
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 .auth-container {
   width: 100%;
   max-width: 450px;
+  min-width: 0;
 }
 
-/* Branding */
+/* BRANDING */
 
 .auth-brand {
   text-align: center;
@@ -52,9 +62,11 @@
   margin-top: 8px;
 }
 
-/* Login Card */
+/* LOGIN CARD */
 
 .auth-card {
+  width: 100%;
+  box-sizing: border-box;
   background: #12141c;
   border: 1px solid #292c37;
   border-radius: 14px;
@@ -71,12 +83,14 @@
 .auth-subtitle {
   color: #a1a6b3;
   font-size: 13px;
+  line-height: 1.6;
   margin-bottom: 28px;
 }
 
-/* Form */
+/* FORM */
 
 .form-group {
+  width: 100%;
   margin-bottom: 22px;
 }
 
@@ -89,6 +103,7 @@
 }
 
 .form-group input {
+  display: block;
   width: 100%;
   height: 46px;
   padding: 0 13px;
@@ -97,7 +112,7 @@
   border-radius: 7px;
   background: #08090d;
   color: white;
-  font-size: 13px;
+  font-size: 16px;
   outline: none;
   transition: 0.25s ease;
 }
@@ -109,16 +124,18 @@
 
 .form-group input::placeholder {
   color: #777e8e;
+  font-size: 14px;
 }
 
-/* Password */
+/* PASSWORD */
 
 .password-field {
   position: relative;
+  width: 100%;
 }
 
 .password-field input {
-  padding-right: 65px;
+  padding-right: 70px;
 }
 
 .password-field button {
@@ -132,14 +149,16 @@
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+  padding: 8px 4px;
 }
 
-/* Validation */
+/* VALIDATION */
 
 .field-error {
   display: block;
   color: #ff6464;
   font-size: 11px;
+  line-height: 1.5;
   margin-top: 7px;
 }
 
@@ -151,13 +170,22 @@
   background: rgba(255, 70, 70, 0.08);
   color: #ff7777;
   font-size: 13px;
+  line-height: 1.5;
 }
 
-/* Login Button */
+.form-group input.invalid-input {
+  border-color: #ff6464;
+}
+
+.form-group input.invalid-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 100, 100, 0.12);
+}
+
+/* LOGIN BUTTON */
 
 .login-btn {
   width: 100%;
-  height: 48px;
+  min-height: 48px;
   margin-top: 8px;
   border: none;
   border-radius: 7px;
@@ -175,19 +203,23 @@
 }
 
 .login-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Footer */
+/* FOOTER */
 
 .auth-footer {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
   margin-top: 25px;
   color: #a1a6b3;
   font-size: 13px;
+  text-align: center;
+  line-height: 1.6;
 }
 
 .auth-footer a {
@@ -200,29 +232,106 @@
   text-decoration: underline;
 }
 
-/* Responsive */
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 768px) {
+  .auth-page {
+    min-height: 80vh;
+    padding: 40px 20px;
+  }
+
+  .auth-container {
+    max-width: 430px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
 
 @media (max-width: 480px) {
+  .auth-page {
+    min-height: 75vh;
+    padding: 30px 14px;
+    align-items: center;
+  }
+
+  .auth-brand {
+    margin-bottom: 22px;
+  }
+
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+
+  .auth-brand h1 {
+    font-size: 21px;
+  }
+
+  .auth-brand p {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+
   .auth-card {
     padding: 25px 20px;
+    border-radius: 12px;
   }
 
   .auth-card h2 {
     font-size: 22px;
   }
+
+  .auth-subtitle {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 19px;
+  }
+
+  .form-group input {
+    height: 46px;
+    font-size: 16px;
+  }
+
+  .form-group input::placeholder {
+    font-size: 13px;
+  }
+
+  .login-btn {
+    min-height: 48px;
+  }
+
+  .auth-footer {
+    font-size: 12px;
+    margin-top: 22px;
+  }
 }
 
+/* ========================================
+   SMALL MOBILE
+======================================== */
 
-.form-group input.invalid-input {
-  border-color: #ff6464;
+@media (max-width: 360px) {
+  .auth-page {
+    padding: 25px 10px;
+  }
+
+  .auth-card {
+    padding: 22px 15px;
+  }
+
+  .auth-brand h1 {
+    font-size: 19px;
+  }
+
+  .auth-card h2 {
+    font-size: 20px;
+  }
 }
-
-.form-group input.invalid-input:focus {
-  box-shadow: 0 0 0 3px rgba(255, 100, 100, 0.12);
-}
-
-.login-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-

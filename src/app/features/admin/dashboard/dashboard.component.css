@@ -589,3 +589,331 @@ tbody tr:hover {
     align-items: flex-start;
   }
 }
+
+
+/* =========================================
+   DASHBOARD RESPONSIVE IMPROVEMENTS
+========================================= */
+
+.dashboard,
+.dashboard-section,
+.stats-grid,
+.secondary-stats,
+.analytics-grid {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.stat-card,
+.mini-stat,
+.insight-item,
+.low-stock-item {
+  min-width: 0;
+}
+
+.stat-card > div:last-child,
+.insight-item > div,
+.low-stock-item > div {
+  min-width: 0;
+}
+
+.stat-card h2,
+.mini-stat h3,
+.insight-item h3,
+.low-stock-item h4 {
+  overflow-wrap: anywhere;
+}
+
+/* Charts */
+.chart-container,
+.order-chart-container,
+.revenue-orders-chart-container,
+.top-selling-chart-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.chart-container canvas,
+.order-chart-container canvas,
+.revenue-orders-chart-container canvas,
+.top-selling-chart-container canvas {
+  max-width: 100% !important;
+}
+
+/* Tables */
+.table-container {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .dashboard {
+    padding: 20px;
+  }
+
+  .stats-grid,
+  .secondary-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .dashboard-section {
+    padding: 20px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+  .dashboard {
+    padding: 14px 12px;
+  }
+
+  /* Header */
+  .page-heading {
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .page-heading h1 {
+    font-size: 23px;
+  }
+
+  .page-heading p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .dashboard-badge {
+    padding: 7px 11px;
+    font-size: 10px;
+  }
+
+  /* Statistics */
+  .stats-grid,
+  .secondary-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .stat-card {
+    gap: 10px;
+    padding: 14px 11px;
+  }
+
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+
+  .stat-card p,
+  .mini-stat p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .stat-card h2 {
+    font-size: 17px;
+  }
+
+  .mini-stat {
+    padding: 14px;
+  }
+
+  .mini-stat h3 {
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  /* Sections */
+  .dashboard-section {
+    padding: 15px;
+    margin-bottom: 16px;
+  }
+
+  .section-heading {
+    gap: 12px;
+    margin-bottom: 17px;
+  }
+
+  .section-heading h2 {
+    font-size: 15px;
+  }
+
+  .section-heading p {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .section-heading a {
+    font-size: 12px;
+  }
+
+  .date-filter {
+    width: 100%;
+    min-height: 42px;
+    font-size: 14px;
+  }
+
+  /* Charts */
+  .chart-container,
+  .order-chart-container {
+    height: 230px;
+  }
+
+  .revenue-orders-chart-container {
+    height: 260px;
+  }
+
+  .top-selling-chart-container {
+    height: 240px;
+  }
+
+  /* Insights */
+  .insight-item {
+    gap: 11px;
+    padding: 13px;
+  }
+
+  .insight-item > span {
+    width: 35px;
+    height: 35px;
+    font-size: 17px;
+  }
+
+  .insight-item h3 {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .insight-item p {
+    font-size: 11px;
+  }
+
+  .insight-item small {
+    font-size: 12px;
+  }
+
+  /* Recent orders */
+  .table-container {
+    border-radius: 7px;
+  }
+
+  table {
+    min-width: 580px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    font-size: 11px;
+  }
+
+  /* Low stock */
+  .low-stock-item {
+    gap: 10px;
+    padding: 13px;
+  }
+
+  .low-stock-item h4 {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .low-stock-item small {
+    font-size: 11px;
+  }
+
+  .stock-warning {
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+  .dashboard {
+    padding: 12px 9px;
+  }
+
+  .page-heading h1 {
+    font-size: 21px;
+  }
+
+  .dashboard-badge {
+    font-size: 9px;
+    padding: 6px 8px;
+  }
+
+  .stats-grid,
+  .secondary-stats {
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 12px 9px;
+    gap: 8px;
+  }
+
+  .stat-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+  }
+
+  .stat-card p,
+  .mini-stat p {
+    font-size: 10px;
+  }
+
+  .stat-card h2,
+  .mini-stat h3 {
+    font-size: 15px;
+  }
+
+  .dashboard-section {
+    padding: 12px;
+  }
+
+  .section-heading h2 {
+    font-size: 14px;
+  }
+
+  .chart-container,
+  .order-chart-container {
+    height: 210px;
+  }
+
+  .revenue-orders-chart-container {
+    height: 235px;
+  }
+
+  .top-selling-chart-container {
+    height: 220px;
+  }
+
+  .low-stock-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

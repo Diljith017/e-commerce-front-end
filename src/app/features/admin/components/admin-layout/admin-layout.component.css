@@ -4,9 +4,11 @@
 
 .admin-container {
   display: flex;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
   background: #10131d;
+  box-sizing: border-box;
 }
 
 /* =========================================
@@ -18,11 +20,15 @@
   min-width: 0;
   margin-left: 250px;
   height: 100vh;
+
   display: flex;
   flex-direction: column;
+
   overflow-y: auto;
   overflow-x: hidden;
+
   background: #10131d;
+  box-sizing: border-box;
 }
 
 /* =========================================
@@ -31,8 +37,10 @@
 
 .page-content {
   flex: 1;
+  width: 100%;
   min-width: 0;
   padding: 0;
+
   background: #10131d;
   box-sizing: border-box;
 }
@@ -45,8 +53,10 @@ app-admin-sidebar {
   position: fixed;
   top: 0;
   left: 0;
+
   width: 250px;
   height: 100vh;
+
   z-index: 1000;
 }
 
@@ -72,11 +82,45 @@ app-admin-sidebar {
 }
 
 /* =========================================
-   RESPONSIVE DESIGN
+   TABLET AND MOBILE
 ========================================= */
 
 @media (max-width: 768px) {
-  .main-content {
-    margin-left: 250px;
+
+  .admin-container {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
   }
+
+  .main-content {
+    width: 100%;
+    min-width: 0;
+    height: 100vh;
+
+    margin-left: 0;
+    padding-top: 112px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .page-content {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+
+  .main-content {
+    padding-top: 104px;
+  }
+
 }

@@ -14,3 +14,68 @@ select {
     font-size: 16px !important;
   }
 }
+
+
+/* =================================
+   GLOBAL RESPONSIVE STYLES
+================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Form elements */
+
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px !important;
+}
+
+/* Responsive containers */
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-inline: 12px;
+  }
+}
