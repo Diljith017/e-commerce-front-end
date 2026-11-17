@@ -47,8 +47,8 @@ export const routes: Routes = [
 
   { path: '', component: Home, canActivate: [userGuard], pathMatch: 'full' },
 
-  { path: 'products', component: ProductsList, canActivate: [authGuard] },
-  { path: 'products/:id', component: ProductDetails, canActivate: [authGuard] },
+  { path: 'products', component: ProductsList },
+  { path: 'products/:id', component: ProductDetails },
 
   { path: 'cart', component: CartComponent },
   { path: 'wishlist', component: WishlistComponent },
@@ -59,7 +59,7 @@ export const routes: Routes = [
   { path: 'my-orders', component: MyOrdersComponent, canActivate: [authGuard] },
   { path: 'my-orders/:id', component: OrderDetailsComponent, canActivate: [authGuard] },
 
-  { path: 'offers', component: OffersComponent, canActivate: [authGuard] },
+  { path: 'offers', component: OffersComponent },
 
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
 
