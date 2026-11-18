@@ -122,9 +122,9 @@ allOrders: any[] = [];
 
   loadDashboardData(): void {
     forkJoin({
-      products: this.http.get<any[]>('http://localhost:3000/products'),
-      orders: this.http.get<any[]>('http://localhost:3000/orders'),
-      users: this.http.get<any[]>('http://localhost:3000/users')
+      products: this.http.get<any[]>('https://nutriforge-api-du2u.onrender.com/products'),
+      orders: this.http.get<any[]>('https://nutriforge-api-du2u.onrender.com/orders'),
+      users: this.http.get<any[]>('https://nutriforge-api-du2u.onrender.com/users')
     }).subscribe({
       next: (data) => {
 
