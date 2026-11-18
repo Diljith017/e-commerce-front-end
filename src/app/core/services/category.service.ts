@@ -10,7 +10,7 @@ export class CategoryService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/categories';
+ private apiUrl = 'https://nutriforge-api-du2u.onrender.com/categories';
 
   // Get all categories
   getCategories(): Observable<Category[]> {

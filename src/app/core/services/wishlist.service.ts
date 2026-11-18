@@ -10,7 +10,7 @@ export class WishlistService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/wishlist';
+ private apiUrl = 'https://nutriforge-api-du2u.onrender.com/wishlist';
 
   // Get wishlist of a particular user
   getWishlist(userId: string): Observable<WishlistItem[]> {

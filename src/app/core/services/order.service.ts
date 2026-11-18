@@ -10,7 +10,7 @@ export class OrderService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/orders';
+  private apiUrl = 'https://nutriforge-api-du2u.onrender.com/orders';
 
   // Save a new order
   createOrder(order: Order): Observable<Order> {

@@ -11,7 +11,7 @@ export class CouponService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:3000/coupons';
+  private apiUrl = 'https://nutriforge-api-du2u.onrender.com/coupons';
 
   // Get all coupons (Admin)
   getCoupons(): Observable<Coupon[]> {
