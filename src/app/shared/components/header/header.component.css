@@ -654,3 +654,22 @@
     font-size: 12px;
   }
 }
+
+
+
+
+/* SEARCH BAR SQUARE DESIGN */
+
+.search-container {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+
+.search-container input {
+  border-radius: 0 !important;
+}
+
+.search-container button {
+  border-radius: 0 !important;
+  margin: 0;
+}
